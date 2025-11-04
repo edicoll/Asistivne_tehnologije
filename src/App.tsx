@@ -1,13 +1,23 @@
 import './App.css'
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import Autism from './Difficulties/Autism';
+import Hearing from './Difficulties/Hearing';
+import Vision from './Difficulties/Vision';
+import Dyslexia from './Difficulties/Dyslexia';
+import Emotions from './Difficulties/Emotions';
+import Movement from './Difficulties/Movement';
 
 function App() {
+    const navigate = useNavigate();
+
+
     const buttons = [
-        "Autizam",
-        "Slabovisnost",
-        "Slušni problemi",
-        "Settings",
-        "Notifications",
-        "Logout",
+        { label: "Autizam", path: "/autizam" },
+        { label: "Slabovidnost", path: "/slabovidnost" },
+        { label: "Slušni problemi", path: "/sluh" },
+        { label: "Disleksija", path: "/disleksija" },
+        { label: "Pokret i tijelo", path: "/pokret" },
+        { label: "Emocije i prijateljstvo", path: "/emocije" },
     ];
 
     return (
@@ -15,9 +25,13 @@ function App() {
             <h1 className="app-title">Naziv aplikacije</h1>
             <h2 className="description">Opis i odabir poteškoća</h2>
             <div className="button-grid">
-                {buttons.map((label) => (
-                    <button key={label} className="app-button">
-                        {label}
+                {buttons.map((btn) => (
+                    <button
+                        key={btn.label}
+                        className="app-button"
+                        onClick={() => navigate(btn.path)}
+                    >
+                        {btn.label}
                     </button>
                 ))}
             </div>
@@ -25,4 +39,20 @@ function App() {
     );
 }
 
-export default App
+// Da bi `useNavigate()` radilo, treba Router omotavanje
+export default function RootApp() {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<App />} />
+                <Route path="/autizam" element={<Autism />} />
+                <Route path="/slabovidnost" element={<Vision />} />
+                <Route path="/sluh" element={<Hearing />} />
+                <Route path="/disleksija" element={<Dyslexia />} />
+                <Route path="/pokret" element={<Movement />} />
+                <Route path="/emocije" element={<Emotions />} />
+
+            </Routes>
+        </Router>
+    );
+}

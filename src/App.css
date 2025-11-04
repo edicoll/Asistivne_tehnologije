@@ -79,3 +79,23 @@
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
   background: linear-gradient(135deg, #6366f1, #60a5fa);
 }
+
+/* Globalni "Nazad" gumb gore lijevo */
+.back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 8px 16px;
+  background-color: #0078ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #005fcc;
+}
