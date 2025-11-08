@@ -61,18 +61,20 @@ function Dyslexia() {
     return (
         <div className="page-container">
             <h2>Disleksija</h2>
-            <p>
-                Disleksija je neurobiološko stanje, što znači da proizlazi iz načina na koji je mozak povezan,
-                a ne iz nedostatka inteligencije ili truda. Istraživanja koja koriste snimanje mozga pokazala su
-                da osobe s disleksijom obrađuju jezik drugačije od neurotipičnih čitatelja.
-            </p>
 
             {!started && !quizStarted && (
-                <img
-                    src={ImageDyslexia}
-                    alt="Ilustracija disleksije"
-                    className="intro-image"
-                />
+                <>
+                    <p>
+                        Disleksija je neurobiološko stanje, što znači da proizlazi iz načina na koji je mozak povezan,
+                        a ne iz nedostatka inteligencije ili truda. Istraživanja koja koriste snimanje mozga pokazala su
+                        da osobe s disleksijom obrađuju jezik drugačije od neurotipičnih čitatelja.
+                    </p>
+                    <img
+                        src={ImageDyslexia}
+                        alt="Ilustracija disleksije"
+                        className="intro-image"
+                    />
+                </>
             )}
 
             {/* Dio s primjerima */}
