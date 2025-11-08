@@ -12,18 +12,18 @@ function App() {
 
 
     const buttons = [
-        { label: "Autizam", path: "/autizam" },
-        { label: "Slabovidnost", path: "/slabovidnost" },
-        { label: "Slušni problemi", path: "/sluh" },
-        { label: "Disleksija", path: "/disleksija" },
-        { label: "Pokret i tijelo", path: "/pokret" },
-        { label: "Emocije i prijateljstvo", path: "/emocije" },
+        { label: "🧠 Autizam", path: "/autizam" },
+        { label: "👀 Slabovidnost", path: "/slabovidnost" },
+        { label: "💬 Slušni problemi", path: "/sluh" },
+        { label: "🔤 Disleksija", path: "/disleksija" },
+        { label: "🦽 Pokret i tijelo", path: "/pokret" },
+        { label: "🤝 Emocije i prijateljstvo", path: "/emocije" },
     ];
 
     return (
         <div className="app-container">
-            <h1 className="app-title">Naziv aplikacije</h1>
-            <h2 className="description">Opis i odabir poteškoća</h2>
+            <h1 className="app-title">Moj posebni prijatelj → svi učimo zajedno</h1>
+            <h2 className="description">Svi smo različiti, ali učimo jedni o drugima – nema predrasuda, samo suranja i razumijevanje.</h2>
             <div className="button-grid">
                 {buttons.map((btn) => (
                     <button
