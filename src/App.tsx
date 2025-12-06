@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Autism from './Difficulties/Autism';
-import Hearing from './Difficulties/Hearing';
+import Hearing from './Difficulties/Hearing/Hearing';
 import Vision from './Difficulties/Vision';
 import Dyslexia from './Difficulties/Dyslexia';
 import Emotions from './Difficulties/Emotions';
