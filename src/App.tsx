@@ -2,10 +2,12 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import Autism from './Difficulties/Autism';
 import Hearing from './Difficulties/Hearing/Hearing';
+import MiniGame from './Difficulties/Hearing/Minigame';
 import Vision from './Difficulties/Vision';
 import Dyslexia from './Difficulties/Dyslexia';
 import Emotions from './Difficulties/Emotions';
 import Movement from './Difficulties/Movement';
+import Kviz from './Difficulties/Hearing/Kviz';
 
 function App() {
     const navigate = useNavigate();
@@ -48,6 +50,8 @@ export default function RootApp() {
                 <Route path="/autizam" element={<Autism />} />
                 <Route path="/slabovidnost" element={<Vision />} />
                 <Route path="/sluh" element={<Hearing />} />
+                 <Route path="/sluh/minigame" element={<MiniGame />} /> 
+                 <Route path="/sluh/kviz" element={<Kviz />} /> 
                 <Route path="/disleksija" element={<Dyslexia />} />
                 <Route path="/pokret" element={<Movement />} />
                 <Route path="/emocije" element={<Emotions />} />

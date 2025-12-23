@@ -5,16 +5,15 @@ function Hearing() {
     const navigate = useNavigate();
     
     const goToAnimation = () => {
-        navigate("/hearing/animation");
+        navigate("/sluh/kviz");
     };
     
     const goToMiniGame = () => {
-        navigate("/hearing/minigame");
+        navigate("/sluh/minigame");
     };
     
     return (
         <div className="hearing-container">
-            {/* Zaglavlje */}
             <header className="hearing-header">
                 <div className="header-content">
                     <div className="header-characters">
@@ -33,7 +32,6 @@ function Hearing() {
             </header>
             
             <main className="hearing-content">
-                {/* Uvodni dio */}
                 <section className="intro-section full-width-section">
                     <div className="section-container">
                         <div className="section-header">
@@ -104,7 +102,6 @@ function Hearing() {
                     </div>
                 </section>
                 
-                {/* Aktivnosti */}
                 <section className="activities-section full-width-section">
                     <div className="section-container">
                         <div className="section-header">
@@ -180,8 +177,7 @@ function Hearing() {
                         </div>
                     </div>
                 </section>
-                
-                {/* Savjeti za djecu */}
+
                 <section className="tips-section full-width-section">
                     <div className="section-container">
                         <div className="section-header">
@@ -225,8 +221,7 @@ function Hearing() {
                     </div>
                 </section>
             </main>
-            
-            {/* Footer */}
+
             <footer className="hearing-footer full-width-section">
                 <div className="section-container">
                     <button className="back-button yellow-back-btn" onClick={() => navigate("/")}>
