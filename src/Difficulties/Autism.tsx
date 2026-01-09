@@ -221,11 +221,19 @@ export default function Autism() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leftSec, running]);
 
-  function startTimer() {
-    setLeftSec(presetMin * 60);
-    setRunning(true);
-    setAnnounce(null);
-  }
+    function startTimer() {
+        // Ako timer već ima preostalog vremena (pauziran), samo nastavi
+        if (leftSec > 0) {
+            setRunning(true);
+            return;
+        }
+
+        // Inače pokreni novi timer od preset vrijednosti
+        setLeftSec(presetMin * 60);
+        setRunning(true);
+        setAnnounce(null);
+    }
+
   function stopTimer() { setRunning(false); }
   function resetTimer() { setRunning(false); setLeftSec(0); setAnnounce(null); }
 
@@ -536,11 +544,14 @@ export default function Autism() {
               <div className="autism-timer">
                 <div className="big">{leftSec > 0 ? formatMMSS(leftSec) : `${presetMin}:00`}</div>
                 <div className="autism-row wrap">
-                  {!running ? (
-                    <button className="autism-primary" onClick={startTimer}>Start</button>
-                  ) : (
-                    <button className="autism-secondary" onClick={stopTimer}>Stop</button>
-                  )}
+                                  {!running ? (
+                                      <button className="autism-primary" onClick={startTimer}>
+                                          {leftSec > 0 ? "Nastavi" : "Start"}
+                                      </button>
+                                  ) : (
+                                      <button className="autism-secondary" onClick={stopTimer}>Stop</button>
+                                  )}
+
                   <button className="autism-secondary" onClick={resetTimer}>Reset</button>
                 </div>
                 {announce && <div className="autism-announce" role="status" aria-live="polite">{announce}</div>}
