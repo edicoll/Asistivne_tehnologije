@@ -1,301 +1,474 @@
-/* === AUTISM THEME (light blue + puzzle) === */
-body.autism-theme {
-  --a-bg: #dff3ff;
-  --a-card: #eef9ff;
-  --a-panel: #f6fcff;
-  --a-border: #9dd7f2;
-  --a-text: #0b2b3a;
-  --a-muted: #335a6b;
-  --a-btn: #c7ebff;
-  --a-btn2: #e8f7ff;
-  --a-danger: #ffdddd;
+/* =========================================================
+   AUTIZAM — preuređeno da izgleda kao ostale cjeline
+   (svijetla zelena tema + isti “card / header / nav” stil)
+   ========================================================= */
 
-  background: var(--a-bg) !important;
-  color: var(--a-text) !important;
+/* Reset za root kad je Autism stranica aktivna */
+.autism-main-container ~ #root,
+#root:has(.autism-main-container) {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  width: 100% !important;
 }
 
-/* FIX: globalni dark stilovi su vam znali "pojesti" tekst na svijetloj pozadini.
-   Ovdje forsiramo čitljiv tekst, ali NE diramo high-contrast u bijelo/bijelo. */
-.autism-page {
-  color: var(--a-text) !important;
+/* Glavni kontejner */
+.autism-main-container {
+  /* Theme tokens */
+  --a-bg1: #e8f5e9;
+  --a-bg2: #c8e6c9;
+  --a-primary1: #43a047;
+  --a-primary2: #2e7d32;
+  --a-accent: #1b5e20;
+
+  --a-text: #0b1a0f;       /* skoro crna (čitljivije) */
+  --a-muted: #2b3a30;
+  --a-card: rgba(255, 255, 255, 0.92);
+  --a-cardSolid: #ffffff;
+  --a-border: #81c784;
+  --a-shadow: rgba(0, 0, 0, 0.12);
+
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--a-bg1) 0%, var(--a-bg2) 100%);
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', system-ui, sans-serif;
+  color: var(--a-text);
+  overflow-x: hidden;
+  position: relative;
+  margin: 0;
+  padding: 0;
 }
 
-.autism-page button,
-.autism-page input,
-.autism-page textarea,
-.autism-page select,
-.autism-page option {
-  color: var(--a-text) !important;
-  -webkit-text-fill-color: var(--a-text) !important;
-}
-
-.autism-page input::placeholder,
-.autism-page textarea::placeholder {
-  color: rgba(11, 43, 58, 0.55) !important;
-}
-
-/* === High contrast: PO TVOJEM ZAHTJEVU ostaje svijetlo + crna slova ===
-   Pojačavamo kontrast rubova i pozadina, ali tekst ostaje crn. */
-.autism-highContrast body.autism-theme {
-  --a-bg: #ffffff;
-  --a-card: #ffffff;
-  --a-panel: #ffffff;
-  --a-border: #003b57;     /* tamniji rubovi */
-  --a-text: #000000;       /* crna slova */
+/* Visoki kontrast: jače rubove, svjetlija podloga, ali tekst ostaje crn */
+.autism-highContrast {
+  --a-bg1: #ffffff;
+  --a-bg2: #f2fff4;
+  --a-border: #0d3b1a;
+  --a-shadow: rgba(0, 0, 0, 0.18);
+  --a-text: #000000;
   --a-muted: #1b1b1b;
-  --a-btn: #bfe9ff;
-  --a-btn2: #e6f6ff;
-
-  background: var(--a-bg) !important;
-  color: var(--a-text) !important;
+  --a-card: #ffffff;
+  --a-cardSolid: #ffffff;
 }
 
-.autism-highContrast .autism-page {
-  color: var(--a-text) !important;
-}
-
-.autism-highContrast .autism-page button,
-.autism-highContrast .autism-page input,
-.autism-highContrast .autism-page textarea,
-.autism-highContrast .autism-page select,
-.autism-highContrast .autism-page option {
-  color: var(--a-text) !important;
-  -webkit-text-fill-color: var(--a-text) !important;
-}
-
-.autism-highContrast .autism-page input::placeholder,
-.autism-highContrast .autism-page textarea::placeholder {
-  color: rgba(0, 0, 0, 0.55) !important;
-}
-
-/* layout */
-.autism-page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-/* Large text: učini vidljivo većim u CIJELOM modulu */
-.autism-largeText .autism-page {
+/* Large text: povećaj osnovu samo unutar modula */
+.autism-largeText {
   font-size: 18px;
 }
-.autism-largeText .autism-top h1 {
-  font-size: 32px;
-}
-.autism-largeText .autism-timer .big {
-  font-size: 52px;
+
+.autism-largeText .autism-nav-btn {
+  font-size: 1.25rem;
 }
 
-.autism-top {
-  background: var(--a-card);
-  border: 1px solid var(--a-border);
-  border-radius: 18px;
-  padding: 16px;
+/* Reduced motion: ugasi animacije i tranzicije u modulu */
+.autism-reducedMotion * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
 }
 
-.autism-top h1 {
-  margin: 0;
-  font-size: 28px;
+/* Floating back button (kao ostale cjeline) */
+.autism-float-back-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
   display: flex;
+  align-items: center;
   gap: 10px;
-  align-items: center;
+  padding: 12px 18px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--a-primary1) 0%, var(--a-primary2) 100%);
+  color: white;
+  font-weight: 800;
+  box-shadow: 0 6px 12px var(--a-shadow);
 }
 
-.autism-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--a-border);
-  background: var(--a-panel);
+.autism-float-back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.18);
 }
 
-.autism-sub {
-  margin-top: 8px;
-  color: var(--a-muted) !important;
+.autism-float-back-arrow {
+  font-size: 1.3rem;
 }
 
-.autism-tabs {
+.autism-float-back-text {
+  font-size: 1rem;
+}
+
+/* Header */
+.autism-main-header {
+  width: 100%;
+  background: linear-gradient(135deg, var(--a-primary1) 0%, var(--a-primary2) 100%);
+  padding: 30px 0;
+  text-align: center;
+  border-bottom: 8px dashed var(--a-accent);
+  position: relative;
+}
+
+.autism-header-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.autism-main-header h1 {
+  margin: 0;
+  font-size: 2.8rem;
+  color: white;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  letter-spacing: 1px;
+}
+
+.autism-subtitle {
+  margin: 10px auto 0;
+  max-width: 900px;
+  color: rgba(255,255,255,0.95);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.autism-header-characters {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+.autism-character {
+  position: absolute;
+  font-size: 3rem;
+  filter: drop-shadow(0 3px 0 rgba(0,0,0,0.15));
+}
+
+.autism-character-left {
+  left: 20px;
+  transform: rotate(-8deg);
+}
+
+.autism-character-right {
+  right: 20px;
+  transform: rotate(8deg);
+}
+
+.autism-header-decoration {
+  margin-top: 15px;
   display: flex;
-  gap: 8px;
+  justify-content: center;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-top: 14px;
 }
 
-.autism-tabs button {
-  border: 1px solid var(--a-border);
-  background: var(--a-btn2);
-  padding: 10px 12px;
+.autism-decoration-item {
+  font-size: 1.6rem;
+  background: rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255,255,255,0.7);
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+/* Navigation (Vision-like) */
+.autism-navigation {
+  width: 100%;
+  padding: 18px 20px 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.autism-nav-btn {
+  margin: 0 8px 14px;
+  padding: 14px 22px;
+  font-size: 1.15rem;
+  background: linear-gradient(135deg, var(--a-accent) 0%, #0e4a1a 100%);
+  color: white;
+  border: 2px solid rgba(255,255,255,0.95);
   border-radius: 999px;
   cursor: pointer;
-}
-
-.autism-tabs button.active {
-  background: var(--a-btn);
-  border-color: var(--a-border);
+  transition: all 0.25s ease;
   font-weight: 800;
+  box-shadow: 0 4px 10px var(--a-shadow);
 }
 
-.autism-card {
-  margin-top: 16px;
-  border: 1px solid var(--a-border);
-  border-radius: 18px;
-  padding: 16px;
-  background: var(--a-card);
+.autism-nav-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 14px rgba(0,0,0,0.18);
 }
 
-.autism-panel {
-  border: 1px solid var(--a-border);
-  border-radius: 16px;
-  padding: 14px;
-  background: var(--a-panel);
+.autism-nav-btn.active {
+  background: linear-gradient(135deg, #0e4a1a 0%, #0a3a14 100%);
+  transform: translateY(-2px) scale(1.03);
 }
 
-.autism-grid2 {
+/* Main content */
+.autism-main-content {
+  width: 100%;
+}
+
+/* Sections */
+.autism-section {
+  width: 100%;
+  padding: 34px 0;
+}
+
+.autism-section-alt {
+  background: rgba(255,255,255,0.25);
+  border-top: 3px solid rgba(255,255,255,0.5);
+  border-bottom: 3px solid rgba(255,255,255,0.5);
+}
+
+.autism-section-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.autism-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 22px;
+  text-align: center;
+}
+
+.autism-section-header h2 {
+  margin: 0;
+  font-size: 2.1rem;
+  color: var(--a-accent);
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+}
+
+.autism-section-icon {
+  font-size: 2.2rem;
+  background: var(--a-accent);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 6px 12px var(--a-shadow);
+}
+
+/* Grid / cards */
+.autism-grid-two {
   display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 12px;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 18px;
 }
 
 @media (max-width: 900px) {
-  .autism-grid2 { grid-template-columns: 1fr; }
+  .autism-grid-two {
+    grid-template-columns: 1fr;
+  }
+  .autism-character { display: none; }
 }
 
-.autism-row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+.autism-content-card {
+  background: var(--a-card);
+  border: 3px solid rgba(255,255,255,0.65);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 10px 20px var(--a-shadow);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
-.autism-row.wrap {
-  flex-wrap: wrap;
+.autism-content-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.6rem;
+  color: var(--a-accent);
 }
 
-.autism-row label {
-  display: grid;
-  gap: 6px;
-  font-size: 13px;
-  color: var(--a-muted) !important;
+.autism-content-card h4 {
+  margin: 12px 0 8px;
+  font-size: 1.2rem;
+  color: var(--a-accent);
 }
 
-.autism-row input,
-.autism-row textarea,
-.autism-row select {
-  border: 1px solid var(--a-border);
-  border-radius: 12px;
-  padding: 10px;
-  background: #fff;
-  min-width: 140px;
-}
-
-.autism-row textarea {
-  min-width: 100%;
-  resize: vertical;
-}
-
-.autism-row .grow input {
-  min-width: 240px;
-}
-
-.autism-primary,
-.autism-secondary,
-.autism-dangerBtn {
-  border: 1px solid var(--a-border);
-  border-radius: 12px;
-  padding: 10px 12px;
-  cursor: pointer;
-  background: var(--a-btn2);
-}
-
-.autism-primary {
-  background: var(--a-btn);
-  font-weight: 800;
-}
-
-.autism-dangerBtn {
-  background: var(--a-danger);
-  border-color: #ffb7b7;
-}
-
-.autism-muted {
-  color: var(--a-muted) !important;
-  margin-top: 6px;
-}
-
-.autism-note {
-  border: 1px solid var(--a-border);
-  border-radius: 14px;
-  padding: 12px;
-  background: #fff;
-  margin-top: 12px;
-}
-
-.autism-actions {
+.autism-mini-card {
   margin-top: 14px;
+  border: 2px dashed var(--a-border);
+  background: rgba(255,255,255,0.85);
+}
+
+/* Text helpers */
+.autism-hint {
+  margin: 12px 0 0;
+  color: var(--a-muted);
+  font-weight: 700;
+}
+
+.autism-story {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  background: rgba(255,255,255,0.85);
+  border: 2px dashed var(--a-border);
+  padding: 14px 16px;
+  border-radius: 18px;
+}
+
+/* Actions */
+.autism-actions-row {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
+  margin-top: 14px;
   align-items: center;
 }
 
-.autism-back {
-  border: 1px solid var(--a-border);
-  border-radius: 12px;
-  padding: 10px 12px;
-  text-decoration: none;
-  background: #fff;
-}
-
-/* lists + divider */
-.autism-list {
-  margin: 10px 0 0;
-  padding-left: 18px;
-}
-
-.autism-hr {
+.autism-primary-btn,
+.autism-secondary-btn {
   border: none;
-  border-top: 1px solid var(--a-border);
-  margin: 12px 0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  box-shadow: 0 6px 12px var(--a-shadow);
 }
 
-/* --- Sensory “classroom” mini-simulation --- */
-.autism-sim {
+.autism-primary-btn {
+  background: linear-gradient(135deg, var(--a-primary1) 0%, var(--a-primary2) 100%);
+  color: white;
+}
+
+.autism-primary-btn:hover {
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+}
+
+.autism-secondary-btn {
+  background: rgba(255,255,255,0.95);
+  color: var(--a-text);
+  border: 2px solid var(--a-border);
+}
+
+.autism-secondary-btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Bullets */
+.autism-bullets {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.6;
+  font-weight: 700;
+  color: var(--a-text);
+}
+
+/* Facts */
+.autism-facts-grid {
   display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
+@media (max-width: 600px) {
+  .autism-facts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.autism-fact-card {
+  background: rgba(255,255,255,0.92);
+  border: 2px solid var(--a-border);
+  border-radius: 18px;
+  padding: 14px 14px 12px;
+}
+
+.autism-fact-emoji {
+  font-size: 1.7rem;
+  margin-bottom: 6px;
+}
+
+.autism-fact-title {
+  font-weight: 900;
+  color: var(--a-accent);
+  margin-bottom: 4px;
+}
+
+.autism-fact-text {
+  color: var(--a-muted);
+  font-weight: 700;
+}
+
+/* Controls (inputs/selects/buttons row) */
+.autism-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: end;
+  margin-top: 10px;
+}
+
+.autism-controls.wrap {
+  align-items: center;
+}
+
+.autism-controls label {
+  display: grid;
+  gap: 6px;
+  font-weight: 900;
+  color: var(--a-accent);
+  min-width: 160px;
+}
+
+.autism-grow {
+  flex: 1;
+  min-width: 240px;
+}
+
+.autism-controls input,
+.autism-controls textarea,
+.autism-controls select {
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 2px solid var(--a-border);
+  background: var(--a-cardSolid);
+  color: var(--a-text);
+  font-weight: 800;
+  font-family: inherit;
+}
+
+.autism-controls input::placeholder,
+.autism-controls textarea::placeholder {
+  color: rgba(0,0,0,0.45);
+  font-weight: 700;
+}
+
+.autism-controls textarea {
+  resize: vertical;
+}
+
+/* Classroom / simulation */
 .autism-classroom {
   position: relative;
-  border: 1px solid var(--a-border);
-  border-radius: 16px;
-  background: #ffffff;
-  padding: 14px;
+  border: 2px solid var(--a-border);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.9);
+  padding: 16px;
+  margin-top: 14px;
   overflow: hidden;
-  min-height: 170px;
-}
-
-.autism-noiseBar {
-  height: 10px;
-  border-radius: 999px;
-  background: #e6f4ff;
-  border: 1px solid var(--a-border);
-  overflow: hidden;
-  margin-top: 8px;
-}
-
-.autism-noiseFill {
-  height: 100%;
-  background: #74c7f7;
-  width: 0%;
-  transition: width 250ms ease;
+  min-height: 190px;
 }
 
 .autism-float {
   position: absolute;
   font-size: 22px;
-  opacity: 0.9;
+  opacity: 0.95;
   animation: autism-float 2.2s ease-in-out infinite;
 }
 
@@ -308,35 +481,101 @@ body.autism-theme {
   100% { transform: translateY(0px); }
 }
 
-.autism-simHint {
+.autism-stress {
+  font-weight: 900;
+  color: var(--a-accent);
+}
+
+.autism-noiseBar {
+  height: 12px;
+  border-radius: 999px;
+  border: 2px solid var(--a-border);
+  background: rgba(67,160,71,0.10);
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.autism-noiseFill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(135deg, var(--a-primary1) 0%, var(--a-primary2) 100%);
+  transition: width 250ms ease;
+}
+
+.autism-message {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 2px dashed var(--a-border);
+  background: rgba(255,255,255,0.85);
   font-weight: 800;
 }
 
-/* --- Schedule --- */
-.autism-schedule {
+.autism-quiz {
+  margin-top: 16px;
+}
+
+.autism-quiz-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.autism-feedback {
   margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 2px solid var(--a-border);
+  background: rgba(255,255,255,0.92);
+  font-weight: 900;
+}
+
+/* Form (Razmisli) */
+.autism-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.autism-form label {
   display: grid;
   gap: 8px;
+  font-weight: 900;
+  color: var(--a-accent);
+}
+
+.autism-form textarea {
+  min-height: 90px;
+}
+
+/* Tools — schedule */
+.autism-schedule {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
 }
 
 .autism-item {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: stretch;
 }
 
 .autism-itemMain {
   flex: 1;
-  border: 1px solid var(--a-border);
-  background: #fff;
-  border-radius: 14px;
-  padding: 12px;
+  border: 2px solid var(--a-border);
+  background: rgba(255,255,255,0.95);
+  border-radius: 18px;
+  padding: 14px;
   text-align: left;
   cursor: pointer;
   display: grid;
   grid-template-columns: 82px 1fr auto;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
+  font-family: inherit;
+  color: var(--a-text);
 }
 
 .autism-item.done .autism-itemMain {
@@ -345,91 +584,142 @@ body.autism-theme {
 
 .autism-itemMain .time {
   font-weight: 900;
+  color: var(--a-accent);
 }
 
 .autism-itemMain .title {
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .autism-itemMain .chip {
-  border: 1px solid var(--a-border);
+  border: 2px solid var(--a-border);
   border-radius: 999px;
   padding: 6px 10px;
-  font-size: 12px;
-  background: var(--a-panel);
+  font-size: 0.9rem;
+  background: rgba(67,160,71,0.08);
+  font-weight: 900;
+  color: var(--a-accent);
 }
 
 .autism-danger {
-  width: 44px;
-  border-radius: 14px;
-  border: 1px solid #ffb7b7;
-  background: var(--a-danger);
+  width: 52px;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 140, 140, 0.9);
+  background: #ffe2e2;
   cursor: pointer;
+  font-weight: 900;
 }
 
-/* --- Timer / AAC / Calm tools --- */
-.autism-timer .big {
-  font-size: 42px;
+/* Timer */
+.autism-timer {
+  margin-top: 14px;
+}
+
+.autism-timer-big {
+  font-size: 3rem;
   font-weight: 900;
+  text-align: center;
+  color: var(--a-accent);
   letter-spacing: 1px;
+  margin: 10px 0 12px;
 }
 
 .autism-announce {
-  border: 1px solid var(--a-border);
-  border-radius: 14px;
-  padding: 10px 12px;
-  background: #fff;
-  font-weight: 800;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 2px solid var(--a-border);
+  background: rgba(255,255,255,0.92);
+  font-weight: 900;
+  color: var(--a-text);
 }
 
+/* Divider / spacing */
+.autism-divider {
+  height: 2px;
+  background: rgba(0,0,0,0.12);
+  margin: 18px 0;
+  border-radius: 999px;
+}
+
+.autism-section-spacer {
+  height: 18px;
+}
+
+/* AAC */
 .autism-aacMessage {
-  border: 1px solid var(--a-border);
-  border-radius: 16px;
+  border: 2px solid var(--a-border);
+  border-radius: 18px;
   padding: 14px;
-  background: #fff;
-  font-size: 18px;
-  font-weight: 800;
-  margin-top: 10px;
+  background: rgba(255,255,255,0.95);
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--a-text);
 }
 
 .autism-aacGrid {
   margin-top: 12px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
 .autism-aacCard {
-  border: 1px solid var(--a-border);
-  background: #fff;
-  border-radius: 16px;
+  border: 2px solid var(--a-border);
+  background: rgba(255,255,255,0.95);
+  border-radius: 18px;
   padding: 14px;
   cursor: pointer;
   font-weight: 900;
+  color: var(--a-text);
 }
 
+.autism-aacCard:hover {
+  transform: translateY(-1px);
+}
+
+/* Breathing */
 .autism-breath {
-  margin-top: 10px;
-  border: 1px solid var(--a-border);
-  border-radius: 16px;
+  margin-top: 12px;
+  border: 2px dashed var(--a-border);
+  border-radius: 18px;
   padding: 14px;
-  background: #fff;
+  background: rgba(255,255,255,0.9);
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  font-weight: 900;
 }
 
-/* Reduced motion: gasi animacije i tranzicije (vidi se u "Igraj" tabu) */
-.autism-reducedMotion * {
-  transition: none !important;
-  animation: none !important;
+/* Switches */
+.autism-switches {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
 }
 
-/* bolji focus (pogotovo u high-contrast) */
-.autism-page button:focus-visible,
-.autism-page input:focus-visible,
-.autism-page textarea:focus-visible,
-.autism-page select:focus-visible {
-  outline: 3px solid var(--a-border);
+.autism-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 2px solid var(--a-border);
+  background: rgba(255,255,255,0.92);
+  font-weight: 900;
+  color: var(--a-text);
+}
+
+.autism-switch input {
+  width: 18px;
+  height: 18px;
+}
+
+/* Focus styling for accessibility */
+.autism-main-container button:focus-visible,
+.autism-main-container input:focus-visible,
+.autism-main-container select:focus-visible,
+.autism-main-container textarea:focus-visible {
+  outline: 4px solid var(--a-accent);
   outline-offset: 2px;
 }
