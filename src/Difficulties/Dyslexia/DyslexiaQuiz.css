@@ -1,0 +1,769 @@
+/* Dodaj ove stilove u postojeći CSS */
+
+/* Dyslexia Quiz Container */
+.dyslexia-quiz-container ~ #root,
+#root:has(.dyslexia-quiz-container) {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    width: 100% !important;
+}
+
+.dyslexia-quiz-container {
+    width: 100vw;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #F3E5F5 0%, #E1BEE7 100%);
+    font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', system-ui, sans-serif;
+    color: #4A148C;
+    overflow-x: hidden;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.dyslexia-quiz-header {
+    width: 100%;
+    background: linear-gradient(135deg, #AB47BC 0%, #8E24AA 100%);
+    padding: 30px 0;
+    text-align: center;
+    border-bottom: 8px dashed #7B1FA2;
+    position: relative;
+}
+
+.dyslexia-quiz-header-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.dyslexia-quiz-characters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.dyslexia-quiz-character {
+    font-size: 4rem;
+    animation: dyslexia-quiz-bounce 2s infinite alternate;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+}
+
+.dyslexia-quiz-left {
+    animation-delay: 0s;
+}
+
+.dyslexia-quiz-right {
+    animation-delay: 0.5s;
+}
+
+.dyslexia-quiz-container h1 {
+    font-size: 3.5rem;
+    color: white;
+    margin: 10px 0;
+    text-shadow: 3px 3px 0 #7B1FA2;
+    letter-spacing: 1px;
+    font-weight: 800;
+}
+
+.dyslexia-quiz-decoration {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.dyslexia-quiz-decoration-item {
+    font-size: 2.5rem;
+    animation: dyslexia-quiz-float 3s infinite ease-in-out;
+    filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.2));
+    color: white;
+}
+
+.dyslexia-quiz-decoration-item:nth-child(1) { animation-delay: 0s; }
+.dyslexia-quiz-decoration-item:nth-child(2) { animation-delay: 0.3s; }
+.dyslexia-quiz-decoration-item:nth-child(3) { animation-delay: 0.6s; }
+.dyslexia-quiz-decoration-item:nth-child(4) { animation-delay: 0.9s; }
+
+/* Content */
+.dyslexia-quiz-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 40px 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.dyslexia-quiz-section-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* Progress Bar */
+.dyslexia-quiz-progress {
+    background: white;
+    border-radius: 20px;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 5px solid #AB47BC;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.dyslexia-quiz-progress-bar {
+    height: 20px;
+    background: #F3E5F5;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    border: 3px solid #AB47BC;
+}
+
+.dyslexia-quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #AB47BC, #8E24AA);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.dyslexia-quiz-progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    color: #4A148C;
+    font-weight: bold;
+}
+
+.dyslexia-quiz-counter {
+    color: #7B1FA2;
+}
+
+.dyslexia-quiz-score {
+    background: #AB47BC;
+    padding: 3px 15px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    color: white;
+}
+
+/* Question Card */
+.dyslexia-quiz-question-card {
+    background: white;
+    border-radius: 30px;
+    padding: 16px;
+    margin-bottom: 30px;
+    border: 6px solid #AB47BC;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    text-align: center;
+}
+
+.dyslexia-quiz-question-header h2 {
+    font-size: 2.2rem;
+    color: #4A148C;
+    margin-bottom: 16px;
+    text-shadow: 1px 1px 0 #CE93D8;
+}
+
+/* Image */
+.dyslexia-quiz-image-container {
+    margin-bottom: 16px;
+}
+
+.dyslexia-quiz-image {
+    max-width: 70%;
+    height: 220px; /* Fiksna visina za sve slike */
+    object-fit: contain; /* Održava proporcije */
+    border-radius: 20px;
+    border: 4px solid #CE93D8;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    background: #F3E5F5;
+    padding: 4px;
+}
+
+/* Input */
+.dyslexia-quiz-input {
+    width: 100%;
+    max-width: 600px;
+    padding: 14px;
+    border: 4px solid #CE93D8;
+    background-color: #600e73;
+    border-radius: 20px;
+    font-size: 1.4rem;
+    margin: 0 auto 14px auto;
+    font-family: 'Comic Sans MS', sans-serif;
+    color: #ffffff;
+    text-align: center;
+    display: block;
+}
+
+.dyslexia-quiz-input:focus {
+    outline: none;
+    border-color: #AB47BC;
+    box-shadow: 0 0 0 4px rgba(171, 71, 188, 0.3);
+}
+
+/* Action Buttons - NA SUPROTNIM STRANAMA */
+.dyslexia-quiz-action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 20px;
+}
+
+/* Hint Button - LIJEVA STRANA */
+.dyslexia-quiz-hint-button {
+    padding: 10px 20px;
+    border-radius: 15px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    min-width: 200px;
+    justify-content: center;
+}
+
+.dyslexia-quiz-purple-btn-outline {
+    border: 3px solid #AB47BC;
+    color: #7B1FA2;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.dyslexia-quiz-purple-btn-outline:hover:not(:disabled) {
+    background: #F3E5F5;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.dyslexia-quiz-hint-button-active {
+    border: 3px solid #FF9800;
+    color: #FF9800;
+    background: #FFF3E0;
+    cursor: default;
+}
+
+.dyslexia-quiz-hint-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.dyslexia-quiz-hint-icon {
+    font-size: 1.5rem;
+}
+
+/* Submit Button - DESNA STRANA */
+.dyslexia-quiz-submit-button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #AB47BC 0%, #8E24AA 100%);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    min-width: 200px;
+    justify-content: center;
+}
+
+.dyslexia-quiz-submit-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #8E24AA 0%, #7B1FA2 100%);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
+
+.dyslexia-quiz-submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.dyslexia-quiz-submit-icon {
+    font-size: 1.5rem;
+}
+
+/* Hint Message - POKAZUJE SE ISPOD BUTTONA */
+.dyslexia-quiz-hint-message {
+    background: #FFF3E0;
+    border-radius: 15px;
+    padding: 10px;
+    margin-top: 14px;
+    border: 3px dashed #FF9800;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    animation: dyslexia-quiz-slideUp 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.dyslexia-quiz-hint-message-icon {
+    font-size: 2rem;
+    color: #FF9800;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+.dyslexia-quiz-hint-message-content {
+    flex: 1;
+    text-align: left;
+}
+
+.dyslexia-quiz-hint-message-text {
+    font-size: 1.3rem;
+    color: #5D4037;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.dyslexia-quiz-hint-message-text strong {
+    color: #7B1FA2;
+}
+
+/* Feedback */
+.dyslexia-quiz-feedback {
+    border-radius: 20px;
+    padding: 16px;
+    margin-top: 14px;
+    animation: dyslexia-quiz-slideUp 0.5s ease;
+}
+
+.dyslexia-quiz-correct {
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    border: 4px solid #4CAF50;
+}
+
+.dyslexia-quiz-incorrect {
+    background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+    border: 4px solid #F44336;
+}
+
+.dyslexia-quiz-feedback-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.dyslexia-quiz-feedback-icon {
+    font-size: 3rem;
+    flex-shrink: 0;
+}
+
+.dyslexia-quiz-feedback-text {
+    flex: 1;
+    text-align: left;
+}
+
+.dyslexia-quiz-feedback-text p {
+    font-size: 1.4rem;
+    color: #4A148C;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+.dyslexia-quiz-next-info {
+    font-size: 1.1rem;
+    color: #7B1FA2;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Auto next loading */
+.dyslexia-quiz-auto-next {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.dyslexia-quiz-loading {
+    display: inline-flex;
+    gap: 8px;
+}
+
+.dyslexia-quiz-loading-dot {
+    animation: dyslexia-quiz-blink 1.4s infinite;
+    font-size: 2.5rem;
+    color: #7B1FA2;
+}
+
+.dyslexia-quiz-loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.dyslexia-quiz-loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* Help section */
+.dyslexia-quiz-help {
+    margin-top: 20px;
+}
+
+.dyslexia-quiz-help-card {
+    background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 100%);
+    border-radius: 25px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 4px solid #AB47BC;
+}
+
+.dyslexia-quiz-help-icon {
+    font-size: 3rem;
+    color: #7B1FA2;
+    flex-shrink: 0;
+}
+
+.dyslexia-quiz-help-text {
+    flex: 1;
+    text-align: left;
+}
+
+.dyslexia-quiz-help-text strong {
+    font-size: 1.4rem;
+    color: #4A148C;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.dyslexia-quiz-help-text p {
+    font-size: 1.2rem;
+    color: #4A148C;
+    margin: 0;
+}
+
+/* Quiz Completed */
+.dyslexia-quiz-completed {
+    background: white;
+    border-radius: 35px;
+    padding: 50px;
+    text-align: center;
+    border: 6px solid #AB47BC;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    margin: 40px auto;
+    max-width: 900px;
+    animation: dyslexia-quiz-popIn 0.5s ease;
+}
+
+.dyslexia-quiz-trophy {
+    font-size: 6rem;
+    margin-bottom: 30px;
+    animation: dyslexia-quiz-bounce 1.5s infinite ease;
+    filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
+}
+
+.dyslexia-quiz-completed h2 {
+    color: #4A148C;
+    margin-bottom: 25px;
+    font-size: 2.8rem;
+    text-shadow: 3px 3px 0 #CE93D8;
+}
+
+/* Score Results */
+.dyslexia-quiz-score-results {
+    margin-bottom: 30px;
+}
+
+.dyslexia-quiz-score-circle {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.dyslexia-quiz-score-number {
+    font-size: 5rem;
+    color: #7B1FA2;
+    font-weight: bold;
+    text-shadow: 2px 2px 0 #CE93D8;
+}
+
+.dyslexia-quiz-score-total {
+    font-size: 2.5rem;
+    color: #4A148C;
+    font-weight: bold;
+}
+
+.dyslexia-quiz-score-message {
+    font-size: 1.6rem;
+    color: #4A148C;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Celebration */
+.dyslexia-quiz-celebration {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.dyslexia-celebrate-emoji {
+    font-size: 3rem;
+    animation: dyslexia-quiz-float 2s infinite ease-in-out;
+    filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.3));
+}
+
+.dyslexia-celebrate-emoji:nth-child(1) { animation-delay: 0s; }
+.dyslexia-celebrate-emoji:nth-child(2) { animation-delay: 0.3s; }
+.dyslexia-celebrate-emoji:nth-child(3) { animation-delay: 0.6s; }
+.dyslexia-celebrate-emoji:nth-child(4) { animation-delay: 0.9s; }
+.dyslexia-celebrate-emoji:nth-child(5) { animation-delay: 1.2s; }
+
+/* Summary */
+.dyslexia-quiz-summary {
+    background: #F3E5F5;
+    border-radius: 25px;
+    padding: 30px;
+    margin: 30px 0;
+    border: 4px solid #AB47BC;
+}
+
+.dyslexia-quiz-summary h3 {
+    color: #4A148C;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    text-shadow: 2px 2px 0 #CE93D8;
+}
+
+.dyslexia-quiz-learned-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.dyslexia-quiz-learned-item {
+    font-size: 1.4rem;
+    color: #4A148C;
+    padding: 12px 0;
+    border-bottom: 2px dashed #CE93D8;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dyslexia-quiz-learned-item:last-child {
+    border-bottom: none;
+}
+
+.dyslexia-quiz-learned-item::before {
+    content: "✓";
+    color: #4CAF50;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+/* Quiz Actions (na kraju kviza) */
+.dyslexia-quiz-actions {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.dyslexia-restart-quiz-button,
+.dyslexia-back-to-dyslexia {
+    padding: 18px 35px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #AB47BC 0%, #7B1FA2 100%);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    text-decoration: none;
+    min-width: 250px;
+    justify-content: center;
+}
+
+.dyslexia-purple-back-btn {
+    background: linear-gradient(135deg, #AB47BC 0%, #7B1FA2 100%);
+    border: 5px solid white;
+}
+
+.dyslexia-restart-quiz-button:hover,
+.dyslexia-back-to-dyslexia:hover {
+    background: linear-gradient(135deg, #8E24AA 0%, #6A1B9A 100%);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+.dyslexia-button-icon,
+.dyslexia-back-arrow {
+    font-size: 1.8rem;
+}
+
+/* Footer */
+.dyslexia-quiz-footer {
+    background: #7B1FA2;
+    padding: 30px 0;
+    border-top: 8px solid #AB47BC;
+}
+
+.dyslexia-quiz-footer-decoration {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.dyslexia-footer-emoji {
+    font-size: 2.5rem;
+    animation: dyslexia-quiz-spin 3s linear infinite;
+    filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.3));
+    color: white;
+}
+
+.dyslexia-footer-emoji:nth-child(1) { animation-delay: 0s; }
+.dyslexia-footer-emoji:nth-child(2) { animation-delay: 0.6s; }
+.dyslexia-footer-emoji:nth-child(3) { animation-delay: 1.2s; }
+.dyslexia-footer-emoji:nth-child(4) { animation-delay: 1.8s; }
+.dyslexia-footer-emoji:nth-child(5) { animation-delay: 2.4s; }
+
+.dyslexia-footer-note {
+    text-align: center;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Animations */
+@keyframes dyslexia-quiz-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes dyslexia-quiz-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes dyslexia-quiz-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes dyslexia-quiz-slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes dyslexia-quiz-popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes dyslexia-quiz-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dyslexia-quiz-container h1 {
+        font-size: 2.5rem;
+    }
+
+    .dyslexia-quiz-question-card {
+        padding: 25px;
+    }
+
+    .dyslexia-quiz-image {
+        height: 200px;
+        max-width: 90%;
+    }
+
+    .dyslexia-quiz-action-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .dyslexia-quiz-hint-button,
+    .dyslexia-quiz-submit-button {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .dyslexia-quiz-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .dyslexia-restart-quiz-button,
+    .dyslexia-back-to-dyslexia {
+        width: 100%;
+        max-width: 300px;
+        padding: 15px 25px;
+        font-size: 1.3rem;
+    }
+
+    .dyslexia-quiz-completed {
+        padding: 30px 20px;
+        margin: 20px 15px;
+    }
+
+    .dyslexia-quiz-completed h2 {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dyslexia-quiz-container h1 {
+        font-size: 2rem;
+    }
+
+    .dyslexia-quiz-question-header h2 {
+        font-size: 1.8rem;
+    }
+
+    .dyslexia-quiz-image {
+        height: 180px;
+    }
+
+    .dyslexia-quiz-input {
+        padding: 15px;
+        font-size: 1.2rem;
+    }
+
+    .dyslexia-quiz-hint-message-text {
+        font-size: 1.1rem;
+    }
+
+    .dyslexia-quiz-score-number {
+        font-size: 4rem;
+    }
+
+    .dyslexia-quiz-learned-item {
+        font-size: 1.2rem;
+    }
+}
