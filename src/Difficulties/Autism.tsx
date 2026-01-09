@@ -2,22 +2,15 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Autism.css";
 
-type AacCard = {
-  id: string;
-  label: string;
-  speak: string;
-};
+type Tab = "upoznaj" | "igraj" | "razmisli" | "alati" | "postavke";
 
-type ScheduleItem = {
-  id: string;
-  time: string; // "08:00"
-  title: string;
-  done: boolean;
-};
+type ScheduleItem = { id: string; time: string; title: string; done: boolean };
+type AacCard = { id: string; label: string; speak: string };
 
 const LS_KEYS = {
-  schedule: "assistive:autism:schedule:v1",
-  settings: "assistive:autism:settings:v1",
+  schedule: "assistive:autism:schedule:v2",
+  settings: "assistive:autism:settings:v2",
+  reflections: "assistive:autism:reflections:v1",
 };
 
 function uid() {
@@ -45,9 +38,13 @@ function formatMMSS(totalSec: number) {
 }
 
 export default function Autism() {
-  const [tab, setTab] = useState<
-    "intro" | "schedule" | "transition" | "aac" | "calm" | "quiz" | "settings"
-  >("intro");
+  const [tab, setTab] = useState<Tab>("upoznaj");
+
+  // Apply light-blue theme to the WHOLE page while on /autizam
+  useEffect(() => {
+    document.body.classList.add("autism-theme");
+    return () => document.body.classList.remove("autism-theme");
+  }, []);
 
   const [settings, setSettings] = useState(() =>
     safeJsonParse(localStorage.getItem(LS_KEYS.settings), {
@@ -59,7 +56,6 @@ export default function Autism() {
     })
   );
 
-  // apply low-stim classes
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("autism-largeText", !!settings.largeText);
@@ -71,7 +67,85 @@ export default function Autism() {
     localStorage.setItem(LS_KEYS.settings, JSON.stringify(settings));
   }, [settings]);
 
-  // --------- Schedule ----------
+  function speak(text: string) {
+    if (!settings.enableSpeech) return;
+    if (!("speechSynthesis" in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "hr-HR";
+      window.speechSynthesis.speak(u);
+    } catch {}
+  }
+
+  /* =========================
+     UPOZNAJ (story + facts)
+  ========================== */
+  const story =
+    "Ja sam Luka. Volim kad znam što slijedi i kad je mirnije. Kad je preglasno ili ima previše stvari odjednom, moj mozak se brzo umori. Pomaže mi kad mi netko kaže plan, govori jasno i daje mi vrijeme za pauzu.";
+
+  const facts = [
+    "Autizam je spektar – ljudi mogu imati različite snage i izazove.",
+    "Neki ljudi su osjetljiviji na zvuk, svjetlo ili dodir (senzorna osjetljivost).",
+    "Jasne upute, rutine i predvidljivost često pomažu.",
+    "Najbolje je pitati osobu što joj odgovara – ne pretpostavljati.",
+  ];
+
+  /* =========================
+     IGRAJ I OTKRIJ
+     - “Moj dan drugačijim osjetilima”
+  ========================== */
+  const [noise, setNoise] = useState<0 | 1 | 2>(2); // 0 tiho, 2 glasno
+  const [motion, setMotion] = useState<0 | 1 | 2>(2); // 0 mirno, 2 puno pokreta
+  const [overloaded, setOverloaded] = useState(true);
+  const [helpQ, setHelpQ] = useState<null | "A" | "B" | "C">(null);
+
+  const stress = useMemo(() => {
+    // jednostavna metrika: buka + pokret
+    const base = noise * 25 + motion * 25; // 0..100
+    return overloaded ? Math.min(100, base + 20) : Math.max(10, base);
+  }, [noise, motion, overloaded]);
+
+  function pressTooMuch() {
+    setNoise(0);
+    setMotion(0);
+    setOverloaded(false);
+    speak("Ponekad je teško kad ima previše informacija. Što bi pomoglo?");
+  }
+
+  function pickHelp(ans: "A" | "B" | "C") {
+    setHelpQ(ans);
+  }
+
+  const helpFeedback = useMemo(() => {
+    if (!helpQ) return null;
+    if (helpQ === "A") return "✅ Bravo! Smanjivanje buke može jako pomoći kad je preglasno.";
+    if (helpQ === "B") return "✅ Bravo! Pauza pomaže mozgu da se odmori i vrati fokus.";
+    return "❌ To obično ne pomaže. Kad je već previše, još više buke može povećati stres.";
+  }, [helpQ]);
+
+  /* =========================
+     RAZMISLI I RAZGOVARAJ (refleksija)
+  ========================== */
+  const [reflections, setReflections] = useState(() =>
+    safeJsonParse(localStorage.getItem(LS_KEYS.reflections), {
+      q1: "",
+      q2: "",
+      q3: "",
+    })
+  );
+
+  useEffect(() => {
+    localStorage.setItem(LS_KEYS.reflections, JSON.stringify(reflections));
+  }, [reflections]);
+
+  /* =========================
+     ALATI (zadržano iz ranije verzije)
+     - vizualni raspored
+     - timer za tranziciju
+     - AAC kartice
+     - smirivanje
+  ========================== */
   const [schedule, setSchedule] = useState<ScheduleItem[]>(() => {
     const seeded: ScheduleItem[] = [
       { id: uid(), time: "07:30", title: "Jutarnja rutina", done: false },
@@ -80,10 +154,7 @@ export default function Autism() {
       { id: uid(), time: "12:00", title: "Ručak", done: false },
       { id: uid(), time: "16:00", title: "Slobodno vrijeme", done: false },
     ];
-    const stored = safeJsonParse<ScheduleItem[]>(
-      localStorage.getItem(LS_KEYS.schedule),
-      []
-    );
+    const stored = safeJsonParse<ScheduleItem[]>(localStorage.getItem(LS_KEYS.schedule), []);
     return stored.length ? stored : seeded;
   });
 
@@ -101,22 +172,17 @@ export default function Autism() {
   function addScheduleItem() {
     const t = newTitle.trim();
     if (!t) return;
-    setSchedule((prev) => [
-      ...prev,
-      { id: uid(), time: newTime, title: t, done: false },
-    ]);
+    setSchedule((prev) => [...prev, { id: uid(), time: newTime, title: t, done: false }]);
     setNewTitle("");
   }
-
   function toggleScheduleDone(id: string) {
     setSchedule((prev) => prev.map((x) => (x.id === id ? { ...x, done: !x.done } : x)));
   }
-
   function removeScheduleItem(id: string) {
     setSchedule((prev) => prev.filter((x) => x.id !== id));
   }
 
-  // --------- Transition Timer ----------
+  // Transition timer
   const presets = [1, 3, 5, 10];
   const [presetMin, setPresetMin] = useState(5);
   const [leftSec, setLeftSec] = useState(0);
@@ -125,8 +191,6 @@ export default function Autism() {
 
   const beepRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
-    // simple beep using data URI (tiny wav-like tone) fallback: no beep if blocked
-    // (we keep it optional because of sensory sensitivity)
     beepRef.current = new Audio(
       "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA="
     );
@@ -134,17 +198,14 @@ export default function Autism() {
 
   useEffect(() => {
     if (!running) return;
+
     if (leftSec <= 0) {
       setRunning(false);
       setAnnounce("Vrijeme je!");
       if (settings.enableBeep) {
-        try {
-          beepRef.current?.play();
-        } catch {}
+        try { beepRef.current?.play(); } catch {}
       }
-      if (settings.enableSpeech) {
-        speak("Vrijeme je.");
-      }
+      speak("Vrijeme je.");
       return;
     }
 
@@ -155,16 +216,8 @@ export default function Autism() {
 
   useEffect(() => {
     if (!running) return;
-
-    // announce at 5 min and 1 min if applicable
-    if (leftSec === 5 * 60) {
-      setAnnounce("Još 5 minuta.");
-      if (settings.enableSpeech) speak("Još 5 minuta.");
-    }
-    if (leftSec === 60) {
-      setAnnounce("Još 1 minuta.");
-      if (settings.enableSpeech) speak("Još 1 minuta.");
-    }
+    if (leftSec === 5 * 60) { setAnnounce("Još 5 minuta."); speak("Još 5 minuta."); }
+    if (leftSec === 60) { setAnnounce("Još 1 minuta."); speak("Još 1 minuta."); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [leftSec, running]);
 
@@ -173,28 +226,10 @@ export default function Autism() {
     setRunning(true);
     setAnnounce(null);
   }
+  function stopTimer() { setRunning(false); }
+  function resetTimer() { setRunning(false); setLeftSec(0); setAnnounce(null); }
 
-  function stopTimer() {
-    setRunning(false);
-  }
-
-  function resetTimer() {
-    setRunning(false);
-    setLeftSec(0);
-    setAnnounce(null);
-  }
-
-  function speak(text: string) {
-    if (!("speechSynthesis" in window)) return;
-    try {
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = "hr-HR";
-      window.speechSynthesis.speak(u);
-    } catch {}
-  }
-
-  // --------- AAC ----------
+  // AAC
   const aacCards: AacCard[] = [
     { id: "c1", label: "Trebam pauzu", speak: "Trebam pauzu." },
     { id: "c2", label: "Previše je glasno", speak: "Previše je glasno." },
@@ -205,15 +240,13 @@ export default function Autism() {
     { id: "c7", label: "Molim vodu", speak: "Molim vodu." },
     { id: "c8", label: "Hvala", speak: "Hvala." },
   ];
-
-  const [aacMessage, setAacMessage] = useState<string>("Klikni karticu");
-
+  const [aacMessage, setAacMessage] = useState("Klikni karticu");
   function handleCard(card: AacCard) {
     setAacMessage(card.speak);
-    if (settings.enableSpeech) speak(card.speak);
+    speak(card.speak);
   }
 
-  // --------- Calm / Breathing ----------
+  // Calm breathing
   const [breathRunning, setBreathRunning] = useState(false);
   const [breathPhase, setBreathPhase] = useState<"IN" | "HOLD" | "OUT">("IN");
   const [breathLeft, setBreathLeft] = useState(4);
@@ -223,125 +256,229 @@ export default function Autism() {
     const t = setTimeout(() => {
       setBreathLeft((s) => {
         if (s <= 1) {
-          // switch phase
-          if (breathPhase === "IN") {
-            setBreathPhase("HOLD");
-            return 4;
-          }
-          if (breathPhase === "HOLD") {
-            setBreathPhase("OUT");
-            return 6;
-          }
-          setBreathPhase("IN");
-          return 4;
+          if (breathPhase === "IN") { setBreathPhase("HOLD"); return 4; }
+          if (breathPhase === "HOLD") { setBreathPhase("OUT"); return 6; }
+          setBreathPhase("IN"); return 4;
         }
         return s - 1;
       });
     }, 1000);
-
     return () => clearTimeout(t);
   }, [breathRunning, breathLeft, breathPhase]);
 
-  const breathLabel =
-    breathPhase === "IN" ? "Udah" : breathPhase === "HOLD" ? "Zadrži" : "Izdah";
-
-  // --------- Quiz ----------
-  const quiz = [
-    {
-      q: "Prijatelj je uznemiren jer se plan promijenio. Što je najbolje?",
-      a: [
-        "Reći: “Nije ništa” i ignorirati",
-        "Pitati: “Želiš pauzu ili novi plan?”",
-        "Smijati se jer je nervozan",
-      ],
-      correct: 1,
-      hint: "Ponudi izbor i podršku (pauza / novi plan).",
-    },
-    {
-      q: "U učionici je preglasno. Koja opcija je najprikladnija?",
-      a: ["Pojačati zvuk", "Trebam pauzu / tiše mjesto", "Ostati bez riječi i trpjeti"],
-      correct: 1,
-      hint: "Jasna poruka + izlazna strategija.",
-    },
-    {
-      q: "Netko govori prebrzo. Što možeš reći?",
-      a: ["Možeš ponoviti sporije?", "Ne zanima me", "Šutjeti"],
-      correct: 0,
-      hint: "Traži ponavljanje sporije.",
-    },
-  ];
-
-  const [qi, setQi] = useState(0);
-  const [picked, setPicked] = useState<number | null>(null);
-  const [score, setScore] = useState(0);
-
-  function pickAnswer(i: number) {
-    if (picked !== null) return;
-    setPicked(i);
-    if (i === quiz[qi].correct) setScore((s) => s + 1);
-  }
-
-  function nextQ() {
-    setPicked(null);
-    setQi((x) => x + 1);
-  }
-
-  function resetQuiz() {
-    setQi(0);
-    setPicked(null);
-    setScore(0);
-  }
+  const breathLabel = breathPhase === "IN" ? "Udah" : breathPhase === "HOLD" ? "Zadrži" : "Izdah";
 
   return (
     <div className="autism-page">
       <div className="autism-top">
-        <h1>Autizam (ASD) – asistivni alati</h1>
+        <h1>
+          🧩 Autizam (ASD)
+          <span className="autism-badge">svjetloplava tema • predvidljivost • komunikacija</span>
+        </h1>
         <p className="autism-sub">
-          Fokus: predvidljivost, tranzicije, jasna komunikacija i samoregulacija (low-stim).
+          Učimo razumjeti senzornu osjetljivost i različite načine komunikacije — bez sažaljenja, kroz istraživanje.
         </p>
 
-        <div className="autism-tabs" role="tablist" aria-label="Autizam moduli">
-          <button className={tab === "intro" ? "active" : ""} onClick={() => setTab("intro")}>Upoznaj</button>
-          <button className={tab === "schedule" ? "active" : ""} onClick={() => setTab("schedule")}>Raspored</button>
-          <button className={tab === "transition" ? "active" : ""} onClick={() => setTab("transition")}>Tranzicija</button>
-          <button className={tab === "aac" ? "active" : ""} onClick={() => setTab("aac")}>Komunikacija</button>
-          <button className={tab === "calm" ? "active" : ""} onClick={() => setTab("calm")}>Smiri se</button>
-          <button className={tab === "quiz" ? "active" : ""} onClick={() => setTab("quiz")}>Kviz</button>
-          <button className={tab === "settings" ? "active" : ""} onClick={() => setTab("settings")}>Postavke</button>
+        <div className="autism-tabs" role="tablist" aria-label="Autizam sadržaj">
+          <button className={tab === "upoznaj" ? "active" : ""} onClick={() => setTab("upoznaj")}>Upoznaj</button>
+          <button className={tab === "igraj" ? "active" : ""} onClick={() => setTab("igraj")}>Igraj i otkrij</button>
+          <button className={tab === "razmisli" ? "active" : ""} onClick={() => setTab("razmisli")}>Razmisli i razgovaraj</button>
+          <button className={tab === "alati" ? "active" : ""} onClick={() => setTab("alati")}>Alati</button>
+          <button className={tab === "postavke" ? "active" : ""} onClick={() => setTab("postavke")}>Postavke</button>
         </div>
       </div>
 
-      {tab === "intro" && (
+      {tab === "upoznaj" && (
         <section className="autism-card">
-          <h2>Što ovaj modul radi?</h2>
-          <ul className="autism-list">
-            <li><b>Vizualni raspored</b> s jasnim nazivima i označavanjem “gotovo”.</li>
-            <li><b>Timer za tranziciju</b> (najave “još 5 min / još 1 min”).</li>
-            <li><b>AAC kartice</b> za brzu komunikaciju (opcionalni govor).</li>
-            <li><b>Smirivanje</b>: disanje 4-4-6 + brze “calm” kartice.</li>
-            <li>Sve se sprema lokalno u pregledniku (localStorage).</li>
-          </ul>
+          <h2>🟢 Upoznaj</h2>
 
-          <div className="autism-note">
-            <b>Napomena:</b> ASD je širok spektar. Cilj je ponuditi nisko-stimulirajuće i predvidljive alate.
-          </div>
+          <div className="autism-grid2">
+            <div className="autism-panel">
+              <h3>Kratka priča</h3>
+              <p>{story}</p>
+              <div className="autism-row wrap">
+                <button className="autism-secondary" onClick={() => speak(story)}>
+                  🔊 Pročitaj priču (ako je uključen govor)
+                </button>
+              </div>
+              <div className="autism-note">
+                <b>Poruka:</b> svi možemo učiti zajedno kad se prilagodimo jedni drugima.
+              </div>
+            </div>
 
-          <div className="autism-actions">
-            <Link className="autism-back" to="/">Povratak</Link>
-            <button className="autism-primary" onClick={() => setTab("settings")}>
-              Uključi low-stim postavke
-            </button>
+            <div className="autism-panel">
+              <h3>Jesi li znao da…</h3>
+              <ul className="autism-list">
+                {facts.map((f) => <li key={f}>{f}</li>)}
+              </ul>
+              <div className="autism-actions">
+                <button className="autism-primary" onClick={() => setTab("igraj")}>Idemo igrati</button>
+                <Link className="autism-back" to="/">Povratak</Link>
+              </div>
+            </div>
           </div>
         </section>
       )}
 
-      {tab === "schedule" && (
+      {tab === "igraj" && (
         <section className="autism-card">
-          <h2>Vizualni raspored</h2>
-          <p className="autism-muted">Klikni aktivnost za “gotovo”. Dodaj svoje aktivnosti.</p>
+          <h2>🟡 Igraj i otkrij</h2>
+          <p className="autism-muted">
+            Mini-igra: <b>“Moj dan drugačijim osjetilima”</b> — razumij što znači senzorno preopterećenje i što pomaže.
+          </p>
+
+          <div className="autism-grid2">
+            <div className="autism-panel autism-sim">
+              <h3>Simulacija učionice</h3>
+
+              <div className="autism-row wrap">
+                <label>
+                  Buka
+                  <select value={noise} onChange={(e) => setNoise(Number(e.target.value) as 0 | 1 | 2)}>
+                    <option value={0}>tiho</option>
+                    <option value={1}>srednje</option>
+                    <option value={2}>glasno</option>
+                  </select>
+                </label>
+                <label>
+                  Pokreti
+                  <select value={motion} onChange={(e) => setMotion(Number(e.target.value) as 0 | 1 | 2)}>
+                    <option value={0}>mirno</option>
+                    <option value={1}>srednje</option>
+                    <option value={2}>puno</option>
+                  </select>
+                </label>
+
+                <button className="autism-primary" onClick={pressTooMuch}>
+                  Previše!
+                </button>
+
+                <button
+                  className="autism-secondary"
+                  onClick={() => { setOverloaded(true); setNoise(2); setMotion(2); setHelpQ(null); }}
+                >
+                  Reset
+                </button>
+              </div>
+
+              <div className="autism-classroom" aria-label="Učionica simulacija">
+                {/* floating icons (visual “movement”) */}
+                {motion > 0 && (
+                  <>
+                    <span className={`autism-float ${motion === 2 ? "fast" : ""}`} style={{ top: 22, left: 18 }}>✏️</span>
+                    <span className={`autism-float slow`} style={{ top: 58, left: 120 }}>📚</span>
+                    <span className={`autism-float ${motion === 2 ? "fast" : ""}`} style={{ top: 26, right: 38 }}>🧑‍🤝‍🧑</span>
+                    <span className={`autism-float slow`} style={{ bottom: 26, right: 58 }}>🔔</span>
+                  </>
+                )}
+
+                <div className="autism-simHint">
+                  Stres (procjena): <b>{stress}/100</b>
+                </div>
+                <div className="autism-noiseBar" aria-label="Razina buke">
+                  <div className="autism-noiseFill" style={{ width: `${noise * 50}%` }} />
+                </div>
+
+                {overloaded ? (
+                  <div className="autism-note">
+                    <b>Osjećaj:</b> “Ima previše informacija odjednom…”
+                  </div>
+                ) : (
+                  <div className="autism-note">
+                    <b>Poruka:</b> “Ponekad je teško kad ima previše informacija. Što bi pomoglo?”
+                  </div>
+                )}
+              </div>
+
+              <h3>Što bi pomoglo?</h3>
+              <div className="autism-row wrap">
+                <button className="autism-secondary" onClick={() => pickHelp("A")}>A) Smanji buku</button>
+                <button className="autism-secondary" onClick={() => pickHelp("B")}>B) Pusti vrijeme za odmor</button>
+                <button className="autism-secondary" onClick={() => pickHelp("C")}>C) Još glasnije pričaj</button>
+              </div>
+
+              {helpFeedback && <div className="autism-note">{helpFeedback}</div>}
+            </div>
+
+            <div className="autism-panel">
+              <h3>Zašto je ovo važno?</h3>
+              <ul className="autism-list">
+                <li>Manje podražaja = lakša koncentracija.</li>
+                <li>Tranzicije (promjene) su lakše kad imamo najavu i plan.</li>
+                <li>Najbolja pomoć je prilagodba okoline + dogovor, ne “spašavanje”.</li>
+              </ul>
+
+              <div className="autism-actions">
+                <button className="autism-primary" onClick={() => setTab("razmisli")}>Razmisli i razgovaraj</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {tab === "razmisli" && (
+        <section className="autism-card">
+          <h2>🔵 Razmisli i razgovaraj</h2>
+          <p className="autism-muted">
+            Ovo su pitanja iz “razmisli” dijela — možeš upisati odgovore i spremit će se lokalno.
+          </p>
+
+          <div className="autism-panel">
+            <div className="autism-row">
+              <label className="grow">
+                1) Što bi tebi pomoglo da se osjećaš bolje u školi?
+                <textarea
+                  rows={3}
+                  value={reflections.q1}
+                  onChange={(e) => setReflections((r: any) => ({ ...r, q1: e.target.value }))}
+                  placeholder="npr. mirnije mjesto, jasniji plan, pauza..."
+                />
+              </label>
+            </div>
+
+            <div className="autism-row">
+              <label className="grow">
+                2) Što možeš pitati prijatelja umjesto da pretpostaviš?
+                <textarea
+                  rows={3}
+                  value={reflections.q2}
+                  onChange={(e) => setReflections((r: any) => ({ ...r, q2: e.target.value }))}
+                  placeholder='npr. "Želiš li pauzu?" "Što ti pomaže?"'
+                />
+              </label>
+            </div>
+
+            <div className="autism-row">
+              <label className="grow">
+                3) Koje 2 prilagodbe iz igre bi pomogle “svima”, ne samo autistima?
+                <textarea
+                  rows={3}
+                  value={reflections.q3}
+                  onChange={(e) => setReflections((r: any) => ({ ...r, q3: e.target.value }))}
+                  placeholder="npr. manje buke, jasnije upute..."
+                />
+              </label>
+            </div>
+
+            <div className="autism-actions">
+              <button className="autism-secondary" onClick={() => setReflections({ q1: "", q2: "", q3: "" })}>
+                Očisti odgovore
+              </button>
+              <Link className="autism-back" to="/">Povratak</Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {tab === "alati" && (
+        <section className="autism-card">
+          <h2>🧰 Alati</h2>
+          <p className="autism-muted">Ovo su praktični alati (raspored, tranzicije, komunikacija, smirivanje).</p>
 
           <div className="autism-grid2">
             <div className="autism-panel">
+              <h3>Vizualni raspored</h3>
+
               <div className="autism-row">
                 <label>
                   Vrijeme
@@ -349,11 +486,7 @@ export default function Autism() {
                 </label>
                 <label className="grow">
                   Aktivnost
-                  <input
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    placeholder="npr. Zadaća"
-                  />
+                  <input value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="npr. Zadaća" />
                 </label>
                 <button className="autism-primary" onClick={addScheduleItem}>Dodaj</button>
               </div>
@@ -361,11 +494,7 @@ export default function Autism() {
               <div className="autism-schedule">
                 {scheduleSorted.map((it) => (
                   <div key={it.id} className={`autism-item ${it.done ? "done" : ""}`}>
-                    <button
-                      className="autism-itemMain"
-                      onClick={() => toggleScheduleDone(it.id)}
-                      aria-pressed={it.done}
-                    >
+                    <button className="autism-itemMain" onClick={() => toggleScheduleDone(it.id)} aria-pressed={it.done}>
                       <span className="time">{it.time}</span>
                       <span className="title">{it.title}</span>
                       <span className="chip">{it.done ? "Gotovo" : "Aktivno"}</span>
@@ -376,106 +505,63 @@ export default function Autism() {
                   </div>
                 ))}
               </div>
+
+              <div className="autism-actions">
+                <button
+                  className="autism-secondary"
+                  onClick={() => {
+                    localStorage.removeItem(LS_KEYS.schedule);
+                    window.location.reload();
+                  }}
+                >
+                  Reset rasporeda (seed)
+                </button>
+              </div>
             </div>
 
             <div className="autism-panel">
-              <h3>Savjeti</h3>
-              <ul className="autism-list">
-                <li>Kratki nazivi (1 radnja).</li>
-                <li>Manje teksta = manje stresa.</li>
-                <li>Dodaj pauze između zahtjevnih aktivnosti.</li>
-              </ul>
-              <button
-                className="autism-secondary"
-                onClick={() => {
-                  localStorage.removeItem(LS_KEYS.schedule);
-                  window.location.reload();
-                }}
-              >
-                Reset rasporeda (seed)
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {tab === "transition" && (
-        <section className="autism-card">
-          <h2>Timer za tranziciju</h2>
-          <p className="autism-muted">
-            Koristi prije promjene aktivnosti. Podržava najave “još 5 min” i “još 1 min”.
-          </p>
-
-          <div className="autism-row wrap">
-            {presets.map((m) => (
-              <button
-                key={m}
-                className={presetMin === m ? "autism-primary" : "autism-secondary"}
-                onClick={() => setPresetMin(m)}
-              >
-                {m} min
-              </button>
-            ))}
-          </div>
-
-          <div className="autism-timer">
-            <div className="big">{leftSec > 0 ? formatMMSS(leftSec) : `${presetMin}:00`}</div>
-            <div className="autism-row wrap">
-              {!running ? (
-                <button className="autism-primary" onClick={startTimer}>Start</button>
-              ) : (
-                <button className="autism-secondary" onClick={stopTimer}>Stop</button>
-              )}
-              <button className="autism-secondary" onClick={resetTimer}>Reset</button>
-            </div>
-
-            {announce && (
-              <div className="autism-announce" role="status" aria-live="polite">
-                {announce}
-              </div>
-            )}
-          </div>
-
-          <div className="autism-note">
-            Tip: najava tranzicije pomaže smanjiti stres kad se aktivnost mijenja.
-          </div>
-        </section>
-      )}
-
-      {tab === "aac" && (
-        <section className="autism-card">
-          <h2>AAC – brza komunikacija</h2>
-          <p className="autism-muted">
-            Klikni karticu. Ako uključiš govor, kartica će se i izgovoriti.
-          </p>
-
-          <div className="autism-aacMessage" aria-live="polite">
-            {aacMessage}
-          </div>
-
-          <div className="autism-aacGrid">
-            {aacCards.map((c) => (
-              <button key={c.id} className="autism-aacCard" onClick={() => handleCard(c)}>
-                {c.label}
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {tab === "calm" && (
-        <section className="autism-card">
-          <h2>Smiri se</h2>
-          <p className="autism-muted">Low-stim alati za samoregulaciju.</p>
-
-          <div className="autism-grid2">
-            <div className="autism-panel">
-              <h3>Disanje 4-4-6</h3>
-              <div className="autism-breath">
-                <div className="phase">{breathLabel}</div>
-                <div className="count">{breathLeft}s</div>
-              </div>
+              <h3>Timer za tranziciju</h3>
               <div className="autism-row wrap">
+                {presets.map((m) => (
+                  <button
+                    key={m}
+                    className={presetMin === m ? "autism-primary" : "autism-secondary"}
+                    onClick={() => setPresetMin(m)}
+                  >
+                    {m} min
+                  </button>
+                ))}
+              </div>
+
+              <div className="autism-timer">
+                <div className="big">{leftSec > 0 ? formatMMSS(leftSec) : `${presetMin}:00`}</div>
+                <div className="autism-row wrap">
+                  {!running ? (
+                    <button className="autism-primary" onClick={startTimer}>Start</button>
+                  ) : (
+                    <button className="autism-secondary" onClick={stopTimer}>Stop</button>
+                  )}
+                  <button className="autism-secondary" onClick={resetTimer}>Reset</button>
+                </div>
+                {announce && <div className="autism-announce" role="status" aria-live="polite">{announce}</div>}
+              </div>
+
+              <h3 style={{ marginTop: 14 }}>AAC kartice</h3>
+              <div className="autism-aacMessage" aria-live="polite">{aacMessage}</div>
+              <div className="autism-aacGrid">
+                {aacCards.map((c) => (
+                  <button key={c.id} className="autism-aacCard" onClick={() => handleCard(c)}>
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+
+              <h3 style={{ marginTop: 14 }}>Smiri se</h3>
+              <div className="autism-breath">
+                <div><b>{breathLabel}</b></div>
+                <div>{breathLeft}s</div>
+              </div>
+              <div className="autism-row wrap" style={{ marginTop: 10 }}>
                 <button
                   className={breathRunning ? "autism-secondary" : "autism-primary"}
                   onClick={() => setBreathRunning((r) => !r)}
@@ -493,99 +579,17 @@ export default function Autism() {
                   Reset
                 </button>
               </div>
-              <p className="autism-muted">Gledaj jednu točku i prati ritam.</p>
-            </div>
-
-            <div className="autism-panel">
-              <h3>Brze “calm” kartice</h3>
-              <div className="autism-calmGrid">
-                <div className="autism-miniCard">
-                  <b>Pauza 2 minute</b>
-                  <div>Odmakni se i diši.</div>
-                </div>
-                <div className="autism-miniCard">
-                  <b>Tiše / slušalice</b>
-                  <div>Smanji stimulaciju.</div>
-                </div>
-                <div className="autism-miniCard">
-                  <b>Voda</b>
-                  <div>Mali gutljaji.</div>
-                </div>
-                <div className="autism-miniCard">
-                  <b>Novi plan</b>
-                  <div>Pitaj: “Što je sljedeće?”</div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
       )}
 
-      {tab === "quiz" && (
+      {tab === "postavke" && (
         <section className="autism-card">
-          <h2>Mini-kviz (situacije)</h2>
-
-          {qi >= quiz.length ? (
-            <div className="autism-panel">
-              <h3>Rezultat</h3>
-              <p className="autism-bigText">
-                Točno: <b>{score}</b> / {quiz.length}
-              </p>
-              <button className="autism-primary" onClick={resetQuiz}>Ponovi</button>
-            </div>
-          ) : (
-            <div className="autism-panel">
-              <div className="autism-muted">Pitanje {qi + 1} / {quiz.length}</div>
-              <h3>{quiz[qi].q}</h3>
-
-              <div className="autism-answers">
-                {quiz[qi].a.map((txt, i) => {
-                  const isPicked = picked === i;
-                  const isCorrect = i === quiz[qi].correct;
-                  const className =
-                    picked === null
-                      ? "autism-secondary"
-                      : isPicked && isCorrect
-                      ? "autism-primary"
-                      : isPicked && !isCorrect
-                      ? "autism-dangerBtn"
-                      : "autism-secondary";
-
-                  return (
-                    <button key={txt} className={className} onClick={() => pickAnswer(i)}>
-                      {txt}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {picked !== null && (
-                <div className="autism-note">
-                  {picked === quiz[qi].correct ? "✅ Točno!" : "❌ Nije točno."} {quiz[qi].hint}
-                </div>
-              )}
-
-              <div className="autism-row wrap">
-                <button
-                  className="autism-primary"
-                  onClick={nextQ}
-                  disabled={picked === null}
-                  aria-disabled={picked === null}
-                >
-                  Sljedeće
-                </button>
-              </div>
-            </div>
-          )}
-        </section>
-      )}
-
-      {tab === "settings" && (
-        <section className="autism-card">
-          <h2>Postavke (low-stim)</h2>
+          <h2>⚙️ Postavke (low-stim)</h2>
 
           <div className="autism-panel">
-            <label className="autism-check">
+            <label className="autism-row wrap">
               <input
                 type="checkbox"
                 checked={settings.largeText}
@@ -594,7 +598,7 @@ export default function Autism() {
               Veći tekst
             </label>
 
-            <label className="autism-check">
+            <label className="autism-row wrap">
               <input
                 type="checkbox"
                 checked={settings.reducedMotion}
@@ -603,7 +607,7 @@ export default function Autism() {
               Reduced motion (manje animacija)
             </label>
 
-            <label className="autism-check">
+            <label className="autism-row wrap">
               <input
                 type="checkbox"
                 checked={settings.highContrast}
@@ -614,7 +618,7 @@ export default function Autism() {
 
             <hr className="autism-hr" />
 
-            <label className="autism-check">
+            <label className="autism-row wrap">
               <input
                 type="checkbox"
                 checked={settings.enableSpeech}
@@ -623,7 +627,7 @@ export default function Autism() {
               Uključi govor (SpeechSynthesis)
             </label>
 
-            <label className="autism-check">
+            <label className="autism-row wrap">
               <input
                 type="checkbox"
                 checked={settings.enableBeep}
@@ -633,12 +637,12 @@ export default function Autism() {
             </label>
 
             <p className="autism-muted">
-              Preporuka: govor i beep ostavi isključeno ako smetaju stimulacijom.
+              Preporuka: govor/beep ostavi isključeno ako smetaju stimulacijom.
             </p>
-          </div>
 
-          <div className="autism-actions">
-            <Link className="autism-back" to="/">Povratak</Link>
+            <div className="autism-actions">
+              <Link className="autism-back" to="/">Povratak</Link>
+            </div>
           </div>
         </section>
       )}
