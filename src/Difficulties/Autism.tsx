@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import './Dyslexia.css'
+import './Dyslexia/Dyslexia.css'
 
 function Autism() {
     const navigate = useNavigate();
