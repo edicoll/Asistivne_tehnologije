@@ -1,17 +1,54 @@
+/* === AUTISM THEME (light blue + puzzle) === */
+body.autism-theme {
+  --a-bg: #dff3ff;         /* svijetloplava pozadina cijele stranice */
+  --a-card: #eef9ff;       /* kartice */
+  --a-panel: #f6fcff;      /* unutarnji paneli */
+  --a-border: #9dd7f2;     /* rubovi */
+  --a-text: #0b2b3a;       /* tamni tekst */
+  --a-muted: #335a6b;      /* sekundarni tekst */
+  --a-btn: #c7ebff;        /* gumbi */
+  --a-btn2: #e8f7ff;       /* sekundarni gumbi */
+  --a-danger: #ffdddd;
+
+  background: var(--a-bg) !important;
+  color: var(--a-text) !important;
+}
+
 .autism-page {
   max-width: 1100px;
   margin: 0 auto;
   padding: 24px;
 }
 
+.autism-top {
+  background: var(--a-card);
+  border: 1px solid var(--a-border);
+  border-radius: 18px;
+  padding: 16px;
+}
+
 .autism-top h1 {
   margin: 0;
   font-size: 28px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.autism-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--a-border);
+  background: var(--a-panel);
 }
 
 .autism-sub {
   margin-top: 8px;
-  color: #666;
+  color: var(--a-muted);
 }
 
 .autism-tabs {
@@ -22,32 +59,33 @@
 }
 
 .autism-tabs button {
-  border: 1px solid #ddd;
-  background: #fff;
+  border: 1px solid var(--a-border);
+  background: var(--a-btn2);
   padding: 10px 12px;
   border-radius: 999px;
   cursor: pointer;
+  color: var(--a-text);
 }
 
 .autism-tabs button.active {
-  background: #f2f2f2;
-  border-color: #cfcfcf;
-  font-weight: 700;
+  background: var(--a-btn);
+  border-color: var(--a-border);
+  font-weight: 800;
 }
 
 .autism-card {
   margin-top: 16px;
-  border: 1px solid #e2e2e2;
+  border: 1px solid var(--a-border);
   border-radius: 18px;
   padding: 16px;
-  background: #fff;
+  background: var(--a-card);
 }
 
 .autism-panel {
-  border: 1px solid #e6e6e6;
+  border: 1px solid var(--a-border);
   border-radius: 16px;
   padding: 14px;
-  background: #fafafa;
+  background: var(--a-panel);
 }
 
 .autism-grid2 {
@@ -75,15 +113,21 @@
   display: grid;
   gap: 6px;
   font-size: 13px;
-  color: #444;
+  color: var(--a-muted);
 }
 
-.autism-row input {
-  border: 1px solid #d6d6d6;
+.autism-row input, .autism-row textarea, .autism-row select {
+  border: 1px solid var(--a-border);
   border-radius: 12px;
   padding: 10px;
   background: #fff;
   min-width: 140px;
+  color: var(--a-text);
+}
+
+.autism-row textarea {
+  min-width: 100%;
+  resize: vertical;
 }
 
 .autism-row .grow input {
@@ -93,35 +137,38 @@
 .autism-primary,
 .autism-secondary,
 .autism-dangerBtn {
-  border: 1px solid #d6d6d6;
-  background: #fff;
+  border: 1px solid var(--a-border);
   border-radius: 12px;
   padding: 10px 12px;
   cursor: pointer;
+  color: var(--a-text);
 }
 
 .autism-primary {
-  background: #f2f2f2;
-  font-weight: 700;
-  border-color: #cfcfcf;
+  background: var(--a-btn);
+  font-weight: 800;
+}
+
+.autism-secondary {
+  background: var(--a-btn2);
 }
 
 .autism-secondary:hover {
-  background: #f7f7f7;
+  filter: brightness(0.98);
 }
 
 .autism-dangerBtn {
-  border-color: #e1b4b4;
-  background: #fff;
+  background: var(--a-danger);
+  border-color: #ffb7b7;
 }
 
 .autism-muted {
-  color: #666;
+  color: var(--a-muted);
   margin-top: 6px;
 }
 
 .autism-note {
-  border: 1px solid #e3e3e3;
+  border: 1px solid var(--a-border);
   border-radius: 14px;
   padding: 12px;
   background: #fff;
@@ -137,20 +184,80 @@
 }
 
 .autism-back {
-  border: 1px solid #ddd;
+  border: 1px solid var(--a-border);
   border-radius: 12px;
   padding: 10px 12px;
   text-decoration: none;
-  color: inherit;
+  color: var(--a-text);
   background: #fff;
 }
 
 .autism-list {
   margin: 10px 0 0;
   padding-left: 18px;
-  color: #444;
+  color: var(--a-text);
 }
 
+.autism-hr {
+  border: none;
+  border-top: 1px solid var(--a-border);
+  margin: 12px 0;
+}
+
+/* --- Sensory “classroom” mini-simulation --- */
+.autism-sim {
+  display: grid;
+  gap: 12px;
+}
+
+.autism-classroom {
+  position: relative;
+  border: 1px solid var(--a-border);
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 14px;
+  overflow: hidden;
+  min-height: 170px;
+}
+
+.autism-noiseBar {
+  height: 10px;
+  border-radius: 999px;
+  background: #e6f4ff;
+  border: 1px solid var(--a-border);
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.autism-noiseFill {
+  height: 100%;
+  background: #74c7f7;
+  width: 0%;
+  transition: width 250ms ease;
+}
+
+.autism-float {
+  position: absolute;
+  font-size: 22px;
+  opacity: 0.9;
+  animation: autism-float 2.2s ease-in-out infinite;
+}
+
+.autism-float.slow { animation-duration: 3.0s; }
+.autism-float.fast { animation-duration: 1.4s; }
+
+@keyframes autism-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.autism-simHint {
+  font-weight: 800;
+  color: var(--a-text);
+}
+
+/* --- Schedule (kept as tool) --- */
 .autism-schedule {
   margin-top: 12px;
   display: grid;
@@ -165,7 +272,7 @@
 
 .autism-itemMain {
   flex: 1;
-  border: 1px solid #dcdcdc;
+  border: 1px solid var(--a-border);
   background: #fff;
   border-radius: 14px;
   padding: 12px;
@@ -178,40 +285,34 @@
 }
 
 .autism-item.done .autism-itemMain {
-  opacity: 0.75;
+  opacity: 0.78;
 }
 
 .autism-itemMain .time {
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .autism-itemMain .title {
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .autism-itemMain .chip {
-  border: 1px solid #ddd;
+  border: 1px solid var(--a-border);
   border-radius: 999px;
   padding: 6px 10px;
   font-size: 12px;
-  background: #fafafa;
+  background: var(--a-panel);
 }
 
 .autism-danger {
   width: 44px;
   border-radius: 14px;
-  border: 1px solid #e6caca;
-  background: #fff;
+  border: 1px solid #ffb7b7;
+  background: var(--a-danger);
   cursor: pointer;
 }
 
-.autism-timer {
-  margin-top: 10px;
-  display: grid;
-  gap: 10px;
-  justify-items: start;
-}
-
+/* --- Timer / AAC / Calm tools --- */
 .autism-timer .big {
   font-size: 42px;
   font-weight: 900;
@@ -219,20 +320,20 @@
 }
 
 .autism-announce {
-  border: 1px solid #dadada;
+  border: 1px solid var(--a-border);
   border-radius: 14px;
   padding: 10px 12px;
   background: #fff;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .autism-aacMessage {
-  border: 1px solid #e1e1e1;
+  border: 1px solid var(--a-border);
   border-radius: 16px;
   padding: 14px;
-  background: #fafafa;
+  background: #fff;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
   margin-top: 10px;
 }
 
@@ -244,71 +345,23 @@
 }
 
 .autism-aacCard {
-  border: 1px solid #dcdcdc;
+  border: 1px solid var(--a-border);
   background: #fff;
   border-radius: 16px;
   padding: 14px;
   cursor: pointer;
-  font-weight: 800;
-}
-
-.autism-aacCard:hover {
-  background: #f8f8f8;
+  font-weight: 900;
 }
 
 .autism-breath {
   margin-top: 10px;
-  border: 1px solid #e1e1e1;
+  border: 1px solid var(--a-border);
   border-radius: 16px;
   padding: 14px;
   background: #fff;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-}
-
-.autism-breath .phase {
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.autism-breath .count {
-  font-size: 16px;
-  font-weight: 800;
-  color: #555;
-}
-
-.autism-calmGrid {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 10px;
-}
-
-.autism-miniCard {
-  border: 1px solid #e1e1e1;
-  border-radius: 16px;
-  padding: 12px;
-  background: #fff;
-}
-
-.autism-answers {
-  margin-top: 10px;
-  display: grid;
-  gap: 10px;
-}
-
-.autism-check {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 10px 0;
-}
-
-.autism-hr {
-  border: none;
-  border-top: 1px solid #e2e2e2;
-  margin: 12px 0;
 }
 
 /* Low-stim global toggles */
@@ -321,10 +374,10 @@
   color: #fff !important;
 }
 
+.autism-highContrast .autism-top,
 .autism-highContrast .autism-card,
 .autism-highContrast .autism-panel,
 .autism-highContrast .autism-itemMain,
-.autism-highContrast .autism-miniCard,
 .autism-highContrast .autism-aacCard,
 .autism-highContrast .autism-aacMessage,
 .autism-highContrast .autism-breath,
@@ -332,7 +385,7 @@
 .autism-highContrast .autism-back {
   background: #000 !important;
   color: #fff !important;
-  border-color: #555 !important;
+  border-color: #666 !important;
 }
 
 .autism-reducedMotion * {
