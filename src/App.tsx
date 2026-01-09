@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import Autism from './Difficulties/Autism';
 import Hearing from './Difficulties/Hearing/Hearing';
 import MiniGame from './Difficulties/Hearing/Minigame';
-import Vision from './Difficulties/Vision';
+import Vision from './Difficulties/Vision/Vision';
 import Dyslexia from './Difficulties/Dyslexia/Dyslexia';
 import Emotions from './Difficulties/Emotions';
 import Movement from './Difficulties/Movement';
@@ -55,7 +55,9 @@ export default function RootApp() {
                  <Route path="/sluh/minigame" element={<MiniGame />} /> 
                  <Route path="/sluh/kviz" element={<Kviz />} /> 
                 <Route path="/disleksija" element={<Dyslexia />} />
-                <Route path="/disleksija/primjeri" element={<DyslexiaExamples />} />
+                <Route path="/disleksija/primjeri" element={<DyslexiaExamples onBack={function (): void {
+                    throw new Error('Function not implemented.');
+                } } />} />
                 <Route path="/disleksija/kviz" element={<DyslexiaQuiz />} />
                 <Route path="/pokret" element={<Movement />} />
                 <Route path="/emocije" element={<Emotions />} />
