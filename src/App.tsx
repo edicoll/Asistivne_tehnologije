@@ -5,7 +5,7 @@ import Hearing from './Difficulties/Hearing/Hearing';
 import MiniGame from './Difficulties/Hearing/Minigame';
 import Vision from './Difficulties/Vision/Vision';
 import Dyslexia from './Difficulties/Dyslexia/Dyslexia';
-import Emotions from './Difficulties/Emotions';
+import Emotion from './Difficulties/Emotion/Emotion';
 import Movement from './Difficulties/Movement';
 import Kviz from './Difficulties/Hearing/Kviz';
 import DyslexiaExamples from './Difficulties/Dyslexia/DyslexiaExamples';
@@ -60,7 +60,7 @@ export default function RootApp() {
                 } } />} />
                 <Route path="/disleksija/kviz" element={<DyslexiaQuiz />} />
                 <Route path="/pokret" element={<Movement />} />
-                <Route path="/emocije" element={<Emotions />} />
+                <Route path="/emocije" element={<Emotion />} />
 
             </Routes>
         </Router>

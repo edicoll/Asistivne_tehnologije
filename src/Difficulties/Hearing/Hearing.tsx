@@ -90,13 +90,6 @@ function Hearing() {
                                         <p>Slanje poruka na papiru ili mobitelu</p>
                                     </div>
                                 </div>
-                                <div className="method">
-                                    <div className="method-icon">🔊</div>
-                                    <div className="method-content">
-                                        <h4>Sluhalo</h4>
-                                        <p>Mali uređaj koji pojačava zvukove</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -226,7 +219,7 @@ function Hearing() {
                 <div className="section-container">
                     <button className="back-button yellow-back-btn" onClick={() => navigate("/")}>
                         <span className="back-arrow">←</span>
-                        Povratak
+                        Početna
                     </button>
                     <div className="footer-decoration">
                         <span className="footer-emoji">👂</span>

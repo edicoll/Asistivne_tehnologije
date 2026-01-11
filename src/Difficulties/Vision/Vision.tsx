@@ -223,7 +223,7 @@ const App: React.FC = () => {
       {/* Float back button - gore lijevo */}
       <button onClick={handleBackToMenu} className="vision3-float-back-button">
         <span className="vision3-float-back-arrow">←</span>
-        <span className="vision3-float-back-text">Povratak na izbornik</span>
+        <span className="vision3-float-back-text">Početna</span>
       </button>
 
       <header className="vision3-main-header">
