@@ -1,3 +1,4 @@
+/* App.css - osnovni stilovi za cijelu aplikaciju */
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -5,99 +6,342 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Pozadina cijele stranice */
+.app-container {
+  background: linear-gradient(135deg, #f5f7ff 0%, #e3e9ff 100%);
+  min-height: 100vh;
+  padding: 2rem;
+  border-radius: 30px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Dječji dekorački elementi */
+.app-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background: linear-gradient(90deg,
+  #4f8fff 0%,
+  #ffcc00 20%,
+  #00cc66 40%,
+  #ff3366 60%,
+  #9966ff 80%,
+  #ff9933 100%);
+  border-radius: 30px 30px 0 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Oblaci u pozadini */
+.cloud {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.3;
+  z-index: 0;
 }
 
-.card {
-  padding: 2em;
+.cloud-1 {
+  width: 150px;
+  height: 60px;
+  top: 10%;
+  left: 5%;
 }
 
-.read-the-docs {
-  color: #888;
+.cloud-2 {
+  width: 120px;
+  height: 50px;
+  top: 15%;
+  right: 8%;
 }
 
-/* Naslov */
+.cloud-3 {
+  width: 100px;
+  height: 40px;
+  bottom: 20%;
+  left: 10%;
+}
+
+/* Naslov sa dječjim fontom */
 .app-title {
-  font-size: 3rem;
-  font-weight: bold;
-  margin-bottom: 3rem;
-  color: #ffffff; /* tamno siva */
+  font-size: 3.2rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #2d3748;
+  text-shadow: 3px 3px 0 rgba(79, 143, 255, 0.15);
+  position: relative;
+  z-index: 1;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+  line-height: 1.2;
 }
 
+/* Strelica u naslovu */
+.app-title::after {
+  content: " →";
+  color: #ff9933;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+
+/* Podnaslov */
 .description {
-  color: #afa6a6;
+  font-size: 1.4rem;
+  color: #4a5568;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  line-height: 1.6;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 1.2rem 2rem;
+  border-radius: 20px;
+  border-left: 6px solid #ffcc00;
+  position: relative;
+  z-index: 1;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
 }
 
+/* Grid za gumbe */
 .button-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  gap: 2rem;
   width: 100%;
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto;
-  justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
+/* Opći stil za gumbe */
 .app-button {
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #ffffff;
-  background: linear-gradient(135deg, #4f46e5, #3b82f6); /* moderan gradient */
+  padding: 1.8rem 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
   border: none;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-radius: 25px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 140px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 25px 25px 0 0;
 }
 
 .app-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-  background: linear-gradient(135deg, #6366f1, #60a5fa);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Globalni "Nazad" gumb gore lijevo */
+.app-button:active {
+  transform: translateY(-5px) scale(0.98);
+}
+
+/* Specifične boje i simboli za svaki gumb */
+
+/* Autizam - plava + puzzle */
+.app-button:nth-child(1) {
+  background: linear-gradient(135deg, #4f8fff 0%, #3a7bf0 100%);
+}
+.app-button:nth-child(1):hover {
+  background: linear-gradient(135deg, #3a7bf0 0%, #2a6bdf 100%);
+}
+.app-button:nth-child(1)::after {
+  content: "🧩";
+  font-size: 2.5rem;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Slabovidnost - zelena + oko */
+.app-button:nth-child(2) {
+  background: linear-gradient(135deg, #00cc66 0%, #00b359 100%);
+}
+.app-button:nth-child(2):hover {
+  background: linear-gradient(135deg, #00b359 0%, #00994d 100%);
+}
+.app-button:nth-child(2)::after {
+  content: "👁️";
+  font-size: 2.5rem;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Slušni problemi - žuta + uho */
+.app-button:nth-child(3) {
+  background: linear-gradient(135deg, #ffcc00 0%, #e6b800 100%);
+}
+.app-button:nth-child(3):hover {
+  background: linear-gradient(135deg, #e6b800 0%, #cca300 100%);
+}
+.app-button:nth-child(3)::after {
+  content: "👂";
+  font-size: 2.5rem;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Disleksija - ljubičasta + knjiga */
+.app-button:nth-child(4) {
+  background: linear-gradient(135deg, #9966ff 0%, #884dff 100%);
+}
+.app-button:nth-child(4):hover {
+  background: linear-gradient(135deg, #884dff 0%, #7733ff 100%);
+}
+.app-button:nth-child(4)::after {
+  content: "📚";
+  font-size: 2.5rem;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Pokret i tijelo - crvena + kolica */
+.app-button:nth-child(5) {
+  background: linear-gradient(135deg, #ff3366 0%, #ff1a53 100%);
+}
+.app-button:nth-child(5):hover {
+  background: linear-gradient(135deg, #ff1a53 0%, #e60040 100%);
+}
+.app-button:nth-child(5)::after {
+  content: "🦽";
+  font-size: 2.5rem;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Emocije - narančasta + srce */
+.app-button:nth-child(6) {
+  background: linear-gradient(135deg, #ff9933 0%, #ff8800 100%);
+}
+.app-button:nth-child(6):hover {
+  background: linear-gradient(135deg, #ff8800 0%, #e67700 100%);
+}
+.app-button:nth-child(6)::after {
+  content: "💖";
+  font-size: 2.5rem;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* Animacija za gumbe */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.app-button:nth-child(odd) {
+  animation: float 3s ease-in-out infinite;
+}
+
+.app-button:nth-child(even) {
+  animation: float 3s ease-in-out infinite 0.5s;
+}
+
+/* Footer poruka */
+.footer-message {
+  margin-top: 4rem;
+  padding: 1.5rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  color: #4a5568;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: 3px dashed #4f8fff;
+  position: relative;
+  z-index: 1;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+}
+
+/* Globalni "Nazad" gumb - dječja verzija */
 .back-button {
   position: fixed;
-  top: 20px;
-  left: 20px;
-  padding: 8px 16px;
-  background-color: #0078ff;
+  top: 25px;
+  left: 25px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #4f8fff, #3a7bf0);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
   z-index: 1000;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(79, 143, 255, 0.3);
+  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
 }
 
 .back-button:hover {
-  background-color: #005fcc;
+  transform: translateX(-3px);
+  box-shadow: 0 8px 20px rgba(79, 143, 255, 0.4);
+  background: linear-gradient(135deg, #3a7bf0, #2a6bdf);
+}
+
+.back-button::before {
+  content: "←";
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+
+/* Responsivnost */
+@media (max-width: 768px) {
+  .button-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    max-width: 500px;
+  }
+
+  .app-title {
+    font-size: 2.5rem;
+  }
+
+  .description {
+    font-size: 1.2rem;
+    padding: 1rem;
+  }
+
+  .app-button {
+    min-height: 120px;
+    padding: 1.5rem 1rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .app-container {
+    padding: 1.5rem;
+  }
+
+  .app-title {
+    font-size: 2rem;
+  }
+
+  .back-button {
+    top: 15px;
+    left: 15px;
+    padding: 10px 18px;
+    font-size: 1rem;
+  }
 }

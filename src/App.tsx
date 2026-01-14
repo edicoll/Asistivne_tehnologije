@@ -14,20 +14,25 @@ import DyslexiaQuiz from './Difficulties/Dyslexia/DyslexiaQuiz';
 function App() {
     const navigate = useNavigate();
 
-
     const buttons = [
-        { label: "🧠 Autizam", path: "/autizam" },
-        { label: "👀 Slabovidnost", path: "/slabovidnost" },
-        { label: "💬 Slušni problemi", path: "/sluh" },
-        { label: "🔤 Disleksija", path: "/disleksija" },
-        { label: "🦽 Pokret i tijelo", path: "/pokret" },
-        { label: "🤝 Emocije i prijateljstvo", path: "/emocije" },
+        { label: "Autizam", path: "/autizam" },
+        { label: "Slabovidnost", path: "/slabovidnost" },
+        { label: "Slušni problemi", path: "/sluh" },
+        { label: "Disleksija", path: "/disleksija" },
+        { label: "Pokret i tijelo", path: "/pokret" },
+        { label: "Emocije i prijateljstvo", path: "/emocije" },
     ];
 
     return (
         <div className="app-container">
+            {/* Oblaci u pozadini */}
+            <div className="cloud cloud-1"></div>
+            <div className="cloud cloud-2"></div>
+            <div className="cloud cloud-3"></div>
+
             <h1 className="app-title">Moj posebni prijatelj → svi učimo zajedno</h1>
             <h2 className="description">Svi smo različiti, ali učimo jedni o drugima – nema predrasuda, samo suranja i razumijevanje.</h2>
+
             <div className="button-grid">
                 {buttons.map((btn) => (
                     <button
@@ -38,6 +43,10 @@ function App() {
                         {btn.label}
                     </button>
                 ))}
+            </div>
+
+            <div className="footer-message">
+                💡 Izaberite temu da saznate kako možete pomoći svojim prijateljima!
             </div>
         </div>
     );
@@ -52,8 +61,8 @@ export default function RootApp() {
                 <Route path="/autizam" element={<Autism />} />
                 <Route path="/slabovidnost" element={<Vision />} />
                 <Route path="/sluh" element={<Hearing />} />
-                 <Route path="/sluh/minigame" element={<MiniGame />} /> 
-                 <Route path="/sluh/kviz" element={<Kviz />} /> 
+                 <Route path="/sluh/minigame" element={<MiniGame />} />
+                 <Route path="/sluh/kviz" element={<Kviz />} />
                 <Route path="/disleksija" element={<Dyslexia />} />
                 <Route path="/disleksija/primjeri" element={<DyslexiaExamples onBack={function (): void {
                     throw new Error('Function not implemented.');
