@@ -232,7 +232,7 @@ function Kviz() {
         {quizCompleted ? (
           <div className="quiz-completed">
             <div className="trophy">{score === 5 ? "🏆" : "⭐"}</div>
-            <h2>{score === 5 ? "BRAVO! SAVRŠENO! 🎉" : "NASTAVI VJEŽBAT! ✨"}</h2>
+            <h2>{score === 5 ? "BRAVO! SAVRŠENO! 🎉" : "NASTAVI VJEŽBATI! ✨"}</h2>
             
             <div className="score-results">
               <div className="score-circle">
