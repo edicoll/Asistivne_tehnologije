@@ -165,10 +165,10 @@
 
 /* Autizam - plava + puzzle */
 .app-button:nth-child(1) {
-  background: linear-gradient(135deg, #4f8fff 0%, #3a7bf0 100%);
+  background: linear-gradient(135deg, #00cc66 0%, #00b359 100%);
 }
 .app-button:nth-child(1):hover {
-  background: linear-gradient(135deg, #3a7bf0 0%, #2a6bdf 100%);
+  background: linear-gradient(135deg, #00b359 0%, #00994d 100%);
 }
 .app-button:nth-child(1)::after {
   content: "🧩";
@@ -178,10 +178,10 @@
 
 /* Slabovidnost - zelena + oko */
 .app-button:nth-child(2) {
-  background: linear-gradient(135deg, #00cc66 0%, #00b359 100%);
+  background: linear-gradient(135deg, #4f8fff 0%, #3a7bf0 100%);
 }
 .app-button:nth-child(2):hover {
-  background: linear-gradient(135deg, #00b359 0%, #00994d 100%);
+  background: linear-gradient(135deg, #3a7bf0 0%, #2a6bdf 100%);
 }
 .app-button:nth-child(2)::after {
   content: "👁️";

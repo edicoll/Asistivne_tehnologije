@@ -195,7 +195,7 @@ function MiniGame() {
                 <div className="sign-image">
                   {currentSign ? renderSignDisplay() : "🤔"}
                 </div>
-                <div className="sign-question">Što znači ovaj znak u znakovnom jeziku?</div>
+                <div className="sign-question">Što predstavlja ovaj znak?</div>
               </div>
             </div>
             

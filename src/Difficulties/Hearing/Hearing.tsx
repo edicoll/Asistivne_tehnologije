@@ -218,7 +218,7 @@ function Hearing() {
             <footer className="hearing-footer full-width-section">
                 <div className="section-container">
                     <button className="back-button yellow-back-btn" onClick={() => navigate("/")}>
-                        <span className="back-arrow">←</span>
+
                         Početna
                     </button>
                     <div className="footer-decoration">
