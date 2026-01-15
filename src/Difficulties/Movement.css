@@ -1,0 +1,761 @@
+/* Movement.css */
+.movement-container-pokret ~ #root,
+#root:has(.movement-container-pokret) {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  width: 100% !important;
+}
+
+/* Main container s jačom crvenom pozadinom */
+.movement-container-pokret {
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FF5252 0%, #D32F2F 100%);
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', system-ui, sans-serif;
+  color: white;
+  overflow-x: hidden;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+/* Ensure inputs/buttons readable even if app has dark global styles */
+.movement-container-pokret button,
+.movement-container-pokret input,
+.movement-container-pokret textarea,
+.movement-container-pokret select,
+.movement-container-pokret option {
+  color: #7F0000;
+  -webkit-text-fill-color: #7F0000;
+}
+
+/* Header s jačom crvenom pozadinom */
+.movement-header-pokret {
+  background: linear-gradient(180deg, #FF5252 0%, #D32F2F 100%);
+  padding: 30px 0;
+  text-align: center;
+  border-bottom: 8px dashed #B71C1C;
+  position: relative;
+}
+
+.movement-header-content-pokret {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* ANIMACIJE - Slično kao u dyslexia primjeru */
+
+/* Bounce animacija za prve dvije ikone (lice i kolica) */
+@keyframes movement-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+/* Float animacija za druge 4 ikone */
+@keyframes movement-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(-1deg);
+  }
+}
+
+/* Back button animacija */
+@keyframes movement-button-entrance {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Back button - slično kao u dyslexia primjeru */
+.movement-back-btn-pokret {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 3px solid rgba(183, 28, 28, 0.6);
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(183, 28, 28, 0.25);
+  transition: all 0.3s ease;
+  min-height: 44px;
+  z-index: 1000;
+  font-size: 16px;
+  color: #B71C1C;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: movement-button-entrance 0.5s ease-out;
+}
+
+.movement-back-btn-pokret:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 16px rgba(183, 28, 28, 0.35);
+  background: rgba(255, 255, 255, 1);
+  border-color: #B71C1C;
+}
+
+.movement-back-btn-pokret:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 8px rgba(183, 28, 28, 0.25);
+}
+
+/* Bijeli naslov i podnaslov */
+.movement-title-pokret {
+  font-size: 3rem;
+  margin: 10px 0;
+  letter-spacing: 1px;
+  text-shadow: 3px 3px 0 #B71C1C;
+  color: white;
+  font-weight: 800;
+}
+
+.movement-subtitle-pokret {
+  font-size: 1.5rem;
+  margin: 0 auto 20px;
+  max-width: 860px;
+  color: #FFEBEE;
+  font-weight: 600;
+}
+
+/* Prve dvije ikone s animacijama - SAMO IKONE BEZ POZADINE */
+.movement-header-characters-pokret {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.movement-character-left-pokret,
+.movement-character-right-pokret {
+  font-size: 4rem;
+  animation: movement-bounce 2s infinite alternate;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+  /* UKLONJENE POZADINE I OBRUBE */
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.movement-character-left-pokret {
+  animation-delay: 0s;
+}
+
+.movement-character-right-pokret {
+  animation-delay: 0.5s;
+}
+
+.movement-character-left-pokret:hover,
+.movement-character-right-pokret:hover {
+  animation-play-state: paused;
+  transform: scale(1.2);
+}
+
+/* Druge 4 ikone s animacijama - SAMO IKONE BEZ POZADINE */
+.movement-header-decoration-pokret {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.movement-decoration-item-pokret {
+  font-size: 2.5rem;
+  animation: movement-float 3s infinite ease-in-out;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
+  transition: all 0.3s ease;
+  /* UKLONJENE POZADINE I OBRUBE */
+  background: none;
+  border: none;
+  padding: 0;
+  color: white;
+}
+
+/* Različiti delay za svaku ikonu za efekt vala */
+.movement-decoration-item-pokret:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.movement-decoration-item-pokret:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.movement-decoration-item-pokret:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.movement-decoration-item-pokret:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
+.movement-decoration-item-pokret:hover {
+  animation-play-state: paused;
+  transform: scale(1.3) rotate(5deg);
+}
+
+.movement-content-pokret {
+  padding: 20px 0 10px;
+}
+
+.movement-full-width-section-pokret {
+  width: 100%;
+  padding: 22px 0;
+  border-bottom: 4px dashed rgba(255, 255, 255, 0.2);
+}
+
+.movement-full-width-section-pokret:last-of-type {
+  border-bottom: none;
+}
+
+.movement-section-container-pokret {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.movement-section-header-pokret {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.movement-section-icon-pokret {
+  font-size: 34px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 16px;
+  padding: 8px 12px;
+  border: 3px solid rgba(183, 28, 28, 0.30);
+  box-shadow: 0 6px 0 rgba(183, 28, 28, 0.18);
+}
+
+.movement-section-title-pokret {
+  margin: 0;
+  font-size: 30px;
+  color: white;
+}
+
+.movement-section-description-pokret {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 20px;
+  color: #FFEBEE;
+  font-size: 16px;
+}
+
+/* Story */
+.movement-story-card-pokret {
+  background: rgba(255, 255, 255, 0.85);
+  border: 4px solid rgba(183, 28, 28, 0.25);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 10px 0 rgba(183, 28, 28, 0.12);
+  max-width: 900px;
+  margin: 0 auto 40px;
+}
+
+.movement-story-text-pokret {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  color: #7F0000;
+}
+
+.movement-story-actions-pokret {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Facts */
+.movement-facts-section-pokret {
+  margin-top: 40px;
+}
+
+.movement-facts-grid-pokret {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.movement-info-card-pokret {
+  background: rgba(255, 255, 255, 0.85);
+  border: 4px solid rgba(183, 28, 28, 0.25);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 10px 0 rgba(183, 28, 28, 0.12);
+  text-align: left;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.movement-info-card-pokret:hover {
+  transform: translateY(-4px);
+}
+
+.movement-card-icon-pokret {
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+
+.movement-card-title-pokret {
+  margin: 0;
+  font-size: 22px;
+  color: #7F0000;
+  font-weight: 800;
+}
+
+.movement-card-text-pokret {
+  margin: 0;
+  color: #5D0000;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+/* Buttons */
+.movement-primary-btn-pokret,
+.movement-secondary-btn-pokret {
+  border: 3px solid rgba(183, 28, 28, 0.35);
+  border-radius: 16px;
+  padding: 12px 24px;
+  font-weight: 900;
+  cursor: pointer;
+  min-height: 44px;
+  box-shadow: 0 7px 0 rgba(183, 28, 28, 0.14);
+  background: rgba(255, 255, 255, 0.85);
+  transition: all 0.2s ease;
+  font-size: 16px;
+  color: #B71C1C;
+}
+
+.movement-primary-btn-pokret {
+  background: #FFEBEE;
+  border-color: #B71C1C;
+}
+
+.movement-primary-btn-pokret:hover,
+.movement-secondary-btn-pokret:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 0 rgba(183, 28, 28, 0.14);
+}
+
+.movement-primary-btn-pokret:active,
+.movement-secondary-btn-pokret:active {
+  transform: translateY(2px);
+  box-shadow: 0 5px 0 rgba(183, 28, 28, 0.14);
+}
+
+/* Game section */
+.movement-game-container-pokret {
+  background: rgba(255, 255, 255, 0.85);
+  border: 4px solid rgba(183, 28, 28, 0.25);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 10px 0 rgba(183, 28, 28, 0.12);
+}
+
+.movement-game-header-pokret {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 3px dashed rgba(183, 28, 28, 0.2);
+}
+
+.movement-score-pill-pokret {
+  background: rgba(255, 255, 255, 0.85);
+  border: 3px solid rgba(183, 28, 28, 0.25);
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-weight: 800;
+  font-size: 16px;
+  color: #B71C1C;
+}
+
+.movement-reset-btn-pokret {
+  margin-left: auto;
+}
+
+.movement-feedback-pokret {
+  background: #fff;
+  border: 3px dashed rgba(183, 28, 28, 0.35);
+  border-radius: 18px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  color: #5D0000;
+  font-weight: 600;
+  text-align: center;
+  font-size: 16px;
+}
+
+.movement-game-content-pokret {
+  display: grid;
+  grid-template-columns: 1.4fr 0.9fr;
+  gap: 30px;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .movement-game-content-pokret {
+    grid-template-columns: 1fr;
+  }
+}
+
+.movement-game-map-pokret {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.movement-school-map-pokret {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.movement-map-zone-pokret {
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  border: 4px solid rgba(183, 28, 28, 0.22);
+  border-radius: 20px;
+  padding: 20px;
+  cursor: pointer;
+  min-height: 120px;
+  transition: all 0.2s ease;
+}
+
+.movement-map-zone-pokret:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 rgba(183, 28, 28, 0.1);
+}
+
+.movement-correct-pokret {
+  border-color: rgba(46, 125, 50, 0.6);
+  background: rgba(232, 245, 233, 0.9);
+}
+
+.movement-wrong-pokret {
+  border-color: rgba(183, 28, 28, 0.6);
+  background: rgba(255, 235, 238, 0.9);
+}
+
+.movement-map-zone-pokret:focus-visible {
+  outline: 4px solid rgba(183, 28, 28, 0.45);
+  outline-offset: 3px;
+}
+
+.movement-zone-header-pokret {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.movement-zone-title-pokret {
+  font-weight: 900;
+  font-size: 20px;
+  color: #B71C1C;
+}
+
+.movement-zone-obstacle-pokret {
+  font-size: 28px;
+}
+
+.movement-zone-body-pokret {
+  display: grid;
+  gap: 12px;
+}
+
+.movement-zone-obstacle-text-pokret {
+  color: #5D0000;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.movement-zone-slot-pokret {
+  background: rgba(255, 235, 238, 0.55);
+  border: 3px dashed rgba(183, 28, 28, 0.28);
+  border-radius: 16px;
+  padding: 16px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.movement-slot-hint-pokret {
+  color: rgba(93, 0, 0, 0.7);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.movement-placed-tool-pokret {
+  font-weight: 900;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #B71C1C;
+}
+
+.movement-badge-pokret {
+  text-align: center;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.85);
+  border: 3px solid rgba(183, 28, 28, 0.25);
+  border-radius: 18px;
+  padding: 16px;
+  font-size: 18px;
+  margin-top: 20px;
+  color: #B71C1C;
+}
+
+/* Tools section */
+.movement-game-tools-pokret {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.movement-tools-title-pokret {
+  margin: 0;
+  font-size: 24px;
+  text-align: center;
+  color: #B71C1C;
+}
+
+.movement-small-text-pokret {
+  color: #5D0000;
+  font-size: 14px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Tools */
+.movement-tools-grid-pokret {
+  display: grid;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.movement-tool-pokret {
+  background: #fff;
+  border: 3px solid rgba(183, 28, 28, 0.22);
+  border-radius: 18px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  gap: 12px;
+  align-items: center;
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.movement-tool-pokret:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(183, 28, 28, 0.1);
+}
+
+.movement-tool-pokret:active { cursor: grabbing; }
+
+.movement-tool-active-pokret {
+  border-color: rgba(183, 28, 28, 0.6);
+  box-shadow: 0 0 0 4px rgba(183, 28, 28, 0.15);
+  background: rgba(255, 235, 238, 0.8);
+}
+
+.movement-tool-pokret:focus-visible {
+  outline: 4px solid rgba(183, 28, 28, 0.35);
+  outline-offset: 3px;
+}
+
+.movement-tool-emoji-pokret {
+  font-size: 40px;
+  text-align: center;
+}
+
+.movement-tool-name-pokret {
+  font-weight: 900;
+  font-size: 20px;
+  margin-bottom: 4px;
+  color: #B71C1C;
+}
+
+.movement-tool-desc-pokret {
+  color: #5D0000;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Tips */
+.movement-tips-grid-pokret {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.movement-tip-card-pokret {
+  margin-top: 14px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 3px solid rgba(183, 28, 28, 0.20);
+  border-radius: 18px;
+  padding: 20px;
+  transition: transform 0.2s ease;
+}
+
+.movement-tip-card-pokret:hover {
+  transform: translateY(-2px);
+}
+
+.movement-tip-card-big-pokret {
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.movement-tip-title-pokret {
+  font-weight: 900;
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #B71C1C;
+}
+
+.movement-tip-text-pokret {
+  color: #5D0000;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* Footer */
+.movement-footer-pokret {
+  margin-top: 40px;
+  padding: 30px 0;
+  border-top: 8px dashed rgba(183, 28, 28, 0.35);
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(183, 28, 28, 0.3);
+}
+
+.movement-footer-text-pokret {
+  margin: 0;
+}
+
+/* Responsive za back button na mobilnim */
+@media (max-width: 768px) {
+  .movement-back-btn-pokret {
+    top: 15px;
+    left: 15px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  /* Sakrij tekst na malim ekranima, pokaži samo strelicu */
+  .movement-back-btn-pokret::after {
+    content: "⬅";
+  }
+
+  .movement-back-btn-pokret span {
+    display: none;
+  }
+
+  .movement-back-btn-pokret:hover span {
+    display: inline;
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    color: #B71C1C;
+    padding: 8px 12px;
+    border-radius: 10px;
+    white-space: nowrap;
+    margin-left: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(183, 28, 28, 0.3);
+    font-size: 14px;
+  }
+
+  /* Responsive za ikone */
+  .movement-character-left-pokret,
+  .movement-character-right-pokret {
+    font-size: 3rem;
+  }
+
+  .movement-decoration-item-pokret {
+    font-size: 2rem;
+  }
+
+  .movement-title-pokret {
+    font-size: 2.2rem;
+  }
+
+  .movement-subtitle-pokret {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .movement-back-btn-pokret {
+    top: 10px;
+    left: 10px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .movement-character-left-pokret,
+  .movement-character-right-pokret {
+    font-size: 2.5rem;
+  }
+
+  .movement-decoration-item-pokret {
+    font-size: 1.8rem;
+  }
+
+  .movement-title-pokret {
+    font-size: 1.8rem;
+  }
+
+  .movement-subtitle-pokret {
+    font-size: 1rem;
+  }
+}
