@@ -1,5 +1,6 @@
-.movement-container ~ #root,
-#root:has(.movement-container) {
+/* Movement.css */
+.movement-container-pokret ~ #root,
+#root:has(.movement-container-pokret) {
   max-width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -7,13 +8,13 @@
   width: 100% !important;
 }
 
-/* Main container */
-.movement-container {
+/* Main container s jačom crvenom pozadinom */
+.movement-container-pokret {
   width: 100vw;
   min-height: 100vh;
-  background: linear-gradient(180deg, #FFEBEE 0%, #FFCDD2 100%);
+  background: linear-gradient(180deg, #FF5252 0%, #D32F2F 100%);
   font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', system-ui, sans-serif;
-  color: #7F0000; /* deep red text */
+  color: white;
   overflow-x: hidden;
   position: relative;
   margin: 0;
@@ -21,125 +22,214 @@
 }
 
 /* Ensure inputs/buttons readable even if app has dark global styles */
-.movement-container button,
-.movement-container input,
-.movement-container textarea,
-.movement-container select,
-.movement-container option {
+.movement-container-pokret button,
+.movement-container-pokret input,
+.movement-container-pokret textarea,
+.movement-container-pokret select,
+.movement-container-pokret option {
   color: #7F0000;
   -webkit-text-fill-color: #7F0000;
 }
 
-.movement-header {
-  background: linear-gradient(180deg, #FFCDD2 0%, #FF8A80 100%);
+/* Header s jačom crvenom pozadinom */
+.movement-header-pokret {
+  background: linear-gradient(180deg, #FF5252 0%, #D32F2F 100%);
   padding: 30px 0;
   text-align: center;
-  border-bottom: 8px dashed #C62828;
+  border-bottom: 8px dashed #B71C1C;
   position: relative;
 }
 
-.header-content {
+.movement-header-content-pokret {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
+  position: relative;
 }
 
-.header-characters {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 480px;
-  margin: 0 auto 10px;
+/* ANIMACIJE - Slično kao u dyslexia primjeru */
+
+/* Bounce animacija za prve dvije ikone (lice i kolica) */
+@keyframes movement-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
-.character {
-  font-size: 48px;
-  background: rgba(255, 255, 255, 0.65);
-  border-radius: 18px;
-  padding: 8px 14px;
-  border: 3px solid rgba(198, 40, 40, 0.35);
-  box-shadow: 0 6px 0 rgba(198, 40, 40, 0.22);
+/* Float animacija za druge 4 ikone */
+@keyframes movement-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(-1deg);
+  }
 }
 
-.movement-header h1 {
-  font-size: 44px;
-  margin: 8px 0 6px;
-  letter-spacing: 1px;
-  text-shadow: 2px 2px 0 rgba(255,255,255,0.55);
+/* Back button animacija */
+@keyframes movement-button-entrance {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-.subtitle {
-  font-size: 18px;
-  margin: 0 auto 12px;
-  max-width: 860px;
-  color: #5D0000;
-}
-
-.header-decoration {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.decoration-item {
-  font-size: 26px;
-  background: rgba(255, 255, 255, 0.65);
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 2px solid rgba(198, 40, 40, 0.30);
-}
-
-/* Navigation */
-.movement-navigation {
-  width: 100%;
-  max-width: 1200px;
-  margin: 14px auto 0;
-  padding: 0 20px;
-  box-sizing: border-box;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.movement-nav-btn {
-  background: rgba(255, 255, 255, 0.75);
-  border: 3px solid rgba(198, 40, 40, 0.35);
-  border-radius: 999px;
-  padding: 10px 16px;
+/* Back button - slično kao u dyslexia primjeru */
+.movement-back-btn-pokret {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 3px solid rgba(183, 28, 28, 0.6);
+  border-radius: 25px;
+  padding: 12px 24px;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 6px 0 rgba(198, 40, 40, 0.18);
-  transition: transform 0.08s ease;
+  box-shadow: 0 6px 12px rgba(183, 28, 28, 0.25);
+  transition: all 0.3s ease;
   min-height: 44px;
+  z-index: 1000;
+  font-size: 16px;
+  color: #B71C1C;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: movement-button-entrance 0.5s ease-out;
 }
 
-.movement-nav-btn:hover { transform: translateY(-1px); }
-.movement-nav-btn:active { transform: translateY(1px); box-shadow: 0 4px 0 rgba(198, 40, 40, 0.18); }
-
-.movement-nav-btn.active {
-  background: #FFEBEE;
-  border-color: #C62828;
+.movement-back-btn-pokret:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 16px rgba(183, 28, 28, 0.35);
+  background: rgba(255, 255, 255, 1);
+  border-color: #B71C1C;
 }
 
-.movement-nav-btn.ghost {
-  background: transparent;
-  border-style: dashed;
+.movement-back-btn-pokret:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 8px rgba(183, 28, 28, 0.25);
 }
 
-.movement-content {
+/* Bijeli naslov i podnaslov */
+.movement-title-pokret {
+  font-size: 3rem;
+  margin: 10px 0;
+  letter-spacing: 1px;
+  text-shadow: 3px 3px 0 #B71C1C;
+  color: white;
+  font-weight: 800;
+}
+
+.movement-subtitle-pokret {
+  font-size: 1.5rem;
+  margin: 0 auto 20px;
+  max-width: 860px;
+  color: #FFEBEE;
+  font-weight: 600;
+}
+
+/* Prve dvije ikone s animacijama - SAMO IKONE BEZ POZADINE */
+.movement-header-characters-pokret {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.movement-character-left-pokret,
+.movement-character-right-pokret {
+  font-size: 4rem;
+  animation: movement-bounce 2s infinite alternate;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+  /* UKLONJENE POZADINE I OBRUBE */
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.movement-character-left-pokret {
+  animation-delay: 0s;
+}
+
+.movement-character-right-pokret {
+  animation-delay: 0.5s;
+}
+
+.movement-character-left-pokret:hover,
+.movement-character-right-pokret:hover {
+  animation-play-state: paused;
+  transform: scale(1.2);
+}
+
+/* Druge 4 ikone s animacijama - SAMO IKONE BEZ POZADINE */
+.movement-header-decoration-pokret {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.movement-decoration-item-pokret {
+  font-size: 2.5rem;
+  animation: movement-float 3s infinite ease-in-out;
+  filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.2));
+  transition: all 0.3s ease;
+  /* UKLONJENE POZADINE I OBRUBE */
+  background: none;
+  border: none;
+  padding: 0;
+  color: white;
+}
+
+/* Različiti delay za svaku ikonu za efekt vala */
+.movement-decoration-item-pokret:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.movement-decoration-item-pokret:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.movement-decoration-item-pokret:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.movement-decoration-item-pokret:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
+.movement-decoration-item-pokret:hover {
+  animation-play-state: paused;
+  transform: scale(1.3) rotate(5deg);
+}
+
+.movement-content-pokret {
   padding: 20px 0 10px;
 }
 
-.full-width-section {
+.movement-full-width-section-pokret {
   width: 100%;
   padding: 22px 0;
+  border-bottom: 4px dashed rgba(255, 255, 255, 0.2);
 }
 
-.section-container {
+.movement-full-width-section-pokret:last-of-type {
+  border-bottom: none;
+}
+
+.movement-section-container-pokret {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -147,54 +237,56 @@
   box-sizing: border-box;
 }
 
-.section-header {
+.movement-section-header-pokret {
   display: flex;
   align-items: center;
   gap: 12px;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
-.section-icon {
+.movement-section-icon-pokret {
   font-size: 34px;
   background: rgba(255, 255, 255, 0.75);
   border-radius: 16px;
   padding: 8px 12px;
-  border: 3px solid rgba(198, 40, 40, 0.30);
-  box-shadow: 0 6px 0 rgba(198, 40, 40, 0.18);
+  border: 3px solid rgba(183, 28, 28, 0.30);
+  box-shadow: 0 6px 0 rgba(183, 28, 28, 0.18);
 }
 
-.section-header h2 {
+.movement-section-title-pokret {
   margin: 0;
   font-size: 30px;
+  color: white;
 }
 
-.section-description {
+.movement-section-description-pokret {
   text-align: center;
   max-width: 900px;
-  margin: 0 auto 14px;
-  color: #5D0000;
+  margin: 0 auto 20px;
+  color: #FFEBEE;
   font-size: 16px;
 }
 
 /* Story */
-.story-card {
+.movement-story-card-pokret {
   background: rgba(255, 255, 255, 0.85);
-  border: 4px solid rgba(198, 40, 40, 0.25);
+  border: 4px solid rgba(183, 28, 28, 0.25);
   border-radius: 22px;
-  padding: 18px 18px;
-  box-shadow: 0 10px 0 rgba(198, 40, 40, 0.12);
-  max-width: 980px;
-  margin: 0 auto;
+  padding: 24px;
+  box-shadow: 0 10px 0 rgba(183, 28, 28, 0.12);
+  max-width: 900px;
+  margin: 0 auto 40px;
 }
 
-.story-text {
+.movement-story-text-pokret {
   font-size: 18px;
-  line-height: 1.55;
-  margin: 0;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  color: #7F0000;
 }
 
-.story-actions {
+.movement-story-actions-pokret {
   margin-top: 14px;
   display: flex;
   justify-content: center;
@@ -203,334 +295,467 @@
 }
 
 /* Facts */
-.facts-grid {
+.movement-facts-section-pokret {
+  margin-top: 40px;
+}
+
+.movement-facts-grid-pokret {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-top: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
 }
 
-.info-card {
+.movement-info-card-pokret {
   background: rgba(255, 255, 255, 0.85);
-  border: 4px solid rgba(198, 40, 40, 0.25);
+  border: 4px solid rgba(183, 28, 28, 0.25);
   border-radius: 22px;
-  padding: 16px;
-  box-shadow: 0 10px 0 rgba(198, 40, 40, 0.12);
-  text-align: center;
+  padding: 24px;
+  box-shadow: 0 10px 0 rgba(183, 28, 28, 0.12);
+  text-align: left;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
 }
 
-.info-card h3 {
-  margin: 10px 0 6px;
-  font-size: 20px;
+.movement-info-card-pokret:hover {
+  transform: translateY(-4px);
 }
 
-.info-card p {
+.movement-card-icon-pokret {
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+
+.movement-card-title-pokret {
+  margin: 0;
+  font-size: 22px;
+  color: #7F0000;
+  font-weight: 800;
+}
+
+.movement-card-text-pokret {
   margin: 0;
   color: #5D0000;
-}
-
-.card-icon {
-  font-size: 34px;
+  line-height: 1.5;
+  font-size: 16px;
 }
 
 /* Buttons */
-.primary-btn,
-.secondary-btn {
-  border: 3px solid rgba(198, 40, 40, 0.35);
+.movement-primary-btn-pokret,
+.movement-secondary-btn-pokret {
+  border: 3px solid rgba(183, 28, 28, 0.35);
   border-radius: 16px;
-  padding: 12px 16px;
+  padding: 12px 24px;
   font-weight: 900;
   cursor: pointer;
   min-height: 44px;
-  box-shadow: 0 7px 0 rgba(198, 40, 40, 0.14);
+  box-shadow: 0 7px 0 rgba(183, 28, 28, 0.14);
   background: rgba(255, 255, 255, 0.85);
+  transition: all 0.2s ease;
+  font-size: 16px;
+  color: #B71C1C;
 }
 
-.primary-btn {
+.movement-primary-btn-pokret {
   background: #FFEBEE;
-  border-color: #C62828;
+  border-color: #B71C1C;
 }
 
-.primary-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.movement-primary-btn-pokret:hover,
+.movement-secondary-btn-pokret:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 0 rgba(183, 28, 28, 0.14);
 }
 
-.secondary-btn {
-  background: rgba(255, 255, 255, 0.75);
-}
-
-.primary-btn:active,
-.secondary-btn:active {
+.movement-primary-btn-pokret:active,
+.movement-secondary-btn-pokret:active {
   transform: translateY(2px);
-  box-shadow: 0 5px 0 rgba(198, 40, 40, 0.14);
+  box-shadow: 0 5px 0 rgba(183, 28, 28, 0.14);
 }
 
-/* Game layout */
-.game-layout {
+/* Game section */
+.movement-game-container-pokret {
+  background: rgba(255, 255, 255, 0.85);
+  border: 4px solid rgba(183, 28, 28, 0.25);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 10px 0 rgba(183, 28, 28, 0.12);
+}
+
+.movement-game-header-pokret {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 3px dashed rgba(183, 28, 28, 0.2);
+}
+
+.movement-score-pill-pokret {
+  background: rgba(255, 255, 255, 0.85);
+  border: 3px solid rgba(183, 28, 28, 0.25);
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-weight: 800;
+  font-size: 16px;
+  color: #B71C1C;
+}
+
+.movement-reset-btn-pokret {
+  margin-left: auto;
+}
+
+.movement-feedback-pokret {
+  background: #fff;
+  border: 3px dashed rgba(183, 28, 28, 0.35);
+  border-radius: 18px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  color: #5D0000;
+  font-weight: 600;
+  text-align: center;
+  font-size: 16px;
+}
+
+.movement-game-content-pokret {
   display: grid;
   grid-template-columns: 1.4fr 0.9fr;
-  gap: 16px;
+  gap: 30px;
   align-items: start;
 }
 
 @media (max-width: 980px) {
-  .game-layout {
+  .movement-game-content-pokret {
     grid-template-columns: 1fr;
   }
 }
 
-.map-card,
-.toolbox-card,
-.reflection-card {
-  background: rgba(255, 255, 255, 0.85);
-  border: 4px solid rgba(198, 40, 40, 0.25);
-  border-radius: 22px;
-  padding: 16px;
-  box-shadow: 0 10px 0 rgba(198, 40, 40, 0.12);
-}
-
-.map-top {
+.movement-game-map-pokret {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.score-pill {
-  background: rgba(255, 255, 255, 0.85);
-  border: 3px solid rgba(198, 40, 40, 0.25);
-  border-radius: 999px;
-  padding: 8px 12px;
-  font-weight: 800;
-}
-
-.feedback {
-  background: #fff;
-  border: 3px dashed rgba(198, 40, 40, 0.35);
-  border-radius: 18px;
-  padding: 10px 12px;
-  margin-bottom: 12px;
-  color: #5D0000;
-}
-
-.school-map {
+.movement-school-map-pokret {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 20px;
 }
 
-.map-zone {
+.movement-map-zone-pokret {
   width: 100%;
   text-align: left;
   background: #fff;
-  border: 4px solid rgba(198, 40, 40, 0.22);
-  border-radius: 18px;
-  padding: 12px;
+  border: 4px solid rgba(183, 28, 28, 0.22);
+  border-radius: 20px;
+  padding: 20px;
   cursor: pointer;
-  min-height: 88px;
+  min-height: 120px;
+  transition: all 0.2s ease;
 }
 
-.map-zone.correct {
+.movement-map-zone-pokret:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 rgba(183, 28, 28, 0.1);
+}
+
+.movement-correct-pokret {
   border-color: rgba(46, 125, 50, 0.6);
+  background: rgba(232, 245, 233, 0.9);
 }
 
-.map-zone.wrong {
+.movement-wrong-pokret {
   border-color: rgba(183, 28, 28, 0.6);
+  background: rgba(255, 235, 238, 0.9);
 }
 
-.map-zone:focus-visible {
-  outline: 4px solid rgba(198, 40, 40, 0.45);
+.movement-map-zone-pokret:focus-visible {
+  outline: 4px solid rgba(183, 28, 28, 0.45);
   outline-offset: 3px;
 }
 
-.zone-header {
+.movement-zone-header-pokret {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
+  margin-bottom: 15px;
 }
 
-.zone-title {
+.movement-zone-title-pokret {
   font-weight: 900;
+  font-size: 20px;
+  color: #B71C1C;
+}
+
+.movement-zone-obstacle-pokret {
+  font-size: 28px;
+}
+
+.movement-zone-body-pokret {
+  display: grid;
+  gap: 12px;
+}
+
+.movement-zone-obstacle-text-pokret {
+  color: #5D0000;
+  font-weight: 700;
   font-size: 18px;
 }
 
-.zone-obstacle {
-  font-size: 22px;
-}
-
-.zone-body {
-  margin-top: 6px;
-  display: grid;
-  gap: 8px;
-}
-
-.zone-obstacle-text {
-  color: #5D0000;
-  font-weight: 700;
-}
-
-.zone-slot {
+.movement-zone-slot-pokret {
   background: rgba(255, 235, 238, 0.55);
-  border: 3px dashed rgba(198, 40, 40, 0.28);
-  border-radius: 14px;
-  padding: 10px 10px;
-}
-
-.slot-hint {
-  color: rgba(93, 0, 0, 0.7);
-  font-weight: 800;
-}
-
-.placed-tool {
-  font-weight: 900;
-}
-
-.game-actions {
-  margin-top: 12px;
+  border: 3px dashed rgba(183, 28, 28, 0.28);
+  border-radius: 16px;
+  padding: 16px;
+  min-height: 60px;
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
 }
 
-.badge {
-  margin-top: 12px;
+.movement-slot-hint-pokret {
+  color: rgba(93, 0, 0, 0.7);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.movement-placed-tool-pokret {
+  font-weight: 900;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #B71C1C;
+}
+
+.movement-badge-pokret {
   text-align: center;
   font-weight: 900;
   background: rgba(255, 255, 255, 0.85);
-  border: 3px solid rgba(198, 40, 40, 0.25);
+  border: 3px solid rgba(183, 28, 28, 0.25);
   border-radius: 18px;
-  padding: 10px 12px;
+  padding: 16px;
+  font-size: 18px;
+  margin-top: 20px;
+  color: #B71C1C;
 }
 
-.toolbox-card h3 {
-  margin-top: 0;
+/* Tools section */
+.movement-game-tools-pokret {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.movement-tools-title-pokret {
+  margin: 0;
+  font-size: 24px;
   text-align: center;
+  color: #B71C1C;
 }
 
-.small {
+.movement-small-text-pokret {
   color: #5D0000;
-  font-size: 13px;
+  font-size: 14px;
   text-align: center;
+  line-height: 1.5;
 }
 
 /* Tools */
-.tools-grid {
+.movement-tools-grid-pokret {
   display: grid;
-  gap: 12px;
+  gap: 16px;
   margin-top: 10px;
 }
 
-.tool {
+.movement-tool-pokret {
   background: #fff;
-  border: 3px solid rgba(198, 40, 40, 0.22);
+  border: 3px solid rgba(183, 28, 28, 0.22);
   border-radius: 18px;
-  padding: 12px;
+  padding: 16px;
   display: grid;
-  grid-template-columns: 46px 1fr;
-  gap: 10px;
-  align-items: start;
+  grid-template-columns: 50px 1fr;
+  gap: 12px;
+  align-items: center;
   cursor: grab;
+  transition: all 0.2s ease;
 }
 
-.tool:active { cursor: grabbing; }
-
-.tool.active {
-  border-color: rgba(198, 40, 40, 0.6);
-  box-shadow: 0 0 0 4px rgba(198, 40, 40, 0.15);
+.movement-tool-pokret:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 rgba(183, 28, 28, 0.1);
 }
 
-.tool:focus-visible {
-  outline: 4px solid rgba(198, 40, 40, 0.35);
+.movement-tool-pokret:active { cursor: grabbing; }
+
+.movement-tool-active-pokret {
+  border-color: rgba(183, 28, 28, 0.6);
+  box-shadow: 0 0 0 4px rgba(183, 28, 28, 0.15);
+  background: rgba(255, 235, 238, 0.8);
+}
+
+.movement-tool-pokret:focus-visible {
+  outline: 4px solid rgba(183, 28, 28, 0.35);
   outline-offset: 3px;
 }
 
-.tool-emoji {
-  font-size: 34px;
+.movement-tool-emoji-pokret {
+  font-size: 40px;
   text-align: center;
 }
 
-.tool-name {
+.movement-tool-name-pokret {
   font-weight: 900;
-  font-size: 18px;
-  margin-bottom: 2px;
+  font-size: 20px;
+  margin-bottom: 4px;
+  color: #B71C1C;
 }
 
-.tool-desc {
+.movement-tool-desc-pokret {
   color: #5D0000;
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 /* Tips */
-.tips-grid {
+.movement-tips-grid-pokret {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
 }
 
-.tip-card {
+.movement-tip-card-pokret {
   margin-top: 14px;
   background: rgba(255, 255, 255, 0.85);
-  border: 3px solid rgba(198, 40, 40, 0.20);
+  border: 3px solid rgba(183, 28, 28, 0.20);
   border-radius: 18px;
-  padding: 12px;
+  padding: 20px;
+  transition: transform 0.2s ease;
 }
 
-.tip-card.big { margin-top: 0; }
-.tip-title { font-weight: 900; margin-bottom: 6px; }
-.tip-text { color: #5D0000; }
+.movement-tip-card-pokret:hover {
+  transform: translateY(-2px);
+}
 
-.cta-row {
+.movement-tip-card-big-pokret {
+  margin-top: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 16px;
 }
 
-/* Reflection */
-.reflection-card {
-  max-width: 980px;
-  margin: 0 auto;
-}
-
-.field {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.field span {
+.movement-tip-title-pokret {
   font-weight: 900;
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #B71C1C;
+}
+
+.movement-tip-text-pokret {
   color: #5D0000;
-}
-
-.field textarea {
-  width: 100%;
-  resize: vertical;
-  min-height: 110px;
-  border-radius: 16px;
-  border: 3px solid rgba(198, 40, 40, 0.22);
-  padding: 12px;
-  background: #fff;
-  box-sizing: border-box;
-}
-
-.reflection-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
+  line-height: 1.6;
+  font-size: 16px;
 }
 
 /* Footer */
-.movement-footer {
-  margin-top: 12px;
-  padding: 22px 0;
-  border-top: 8px dashed rgba(198, 40, 40, 0.35);
+.movement-footer-pokret {
+  margin-top: 40px;
+  padding: 30px 0;
+  border-top: 8px dashed rgba(183, 28, 28, 0.35);
   text-align: center;
-  color: #5D0000;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  background: rgba(183, 28, 28, 0.3);
+}
+
+.movement-footer-text-pokret {
+  margin: 0;
+}
+
+/* Responsive za back button na mobilnim */
+@media (max-width: 768px) {
+  .movement-back-btn-pokret {
+    top: 15px;
+    left: 15px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  /* Sakrij tekst na malim ekranima, pokaži samo strelicu */
+  .movement-back-btn-pokret::after {
+    content: "⬅";
+  }
+
+  .movement-back-btn-pokret span {
+    display: none;
+  }
+
+  .movement-back-btn-pokret:hover span {
+    display: inline;
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    color: #B71C1C;
+    padding: 8px 12px;
+    border-radius: 10px;
+    white-space: nowrap;
+    margin-left: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(183, 28, 28, 0.3);
+    font-size: 14px;
+  }
+
+  /* Responsive za ikone */
+  .movement-character-left-pokret,
+  .movement-character-right-pokret {
+    font-size: 3rem;
+  }
+
+  .movement-decoration-item-pokret {
+    font-size: 2rem;
+  }
+
+  .movement-title-pokret {
+    font-size: 2.2rem;
+  }
+
+  .movement-subtitle-pokret {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .movement-back-btn-pokret {
+    top: 10px;
+    left: 10px;
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .movement-character-left-pokret,
+  .movement-character-right-pokret {
+    font-size: 2.5rem;
+  }
+
+  .movement-decoration-item-pokret {
+    font-size: 1.8rem;
+  }
+
+  .movement-title-pokret {
+    font-size: 1.8rem;
+  }
+
+  .movement-subtitle-pokret {
+    font-size: 1rem;
+  }
 }

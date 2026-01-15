@@ -1,8 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Movement.css";
-
-type Tab = "intro" | "game" | "reflect" | "tips";
 
 type ToolId = "ramp" | "wideDoor" | "handrail";
 
@@ -23,13 +21,11 @@ type Zone = {
   correctTool: ToolId;
 };
 
-const LS_REFLECTION = "assistive:movement:reflection:v1";
-
 const tools: Tool[] = [
   {
     id: "ramp",
     name: "Rampa",
-    emoji: "🛝",
+    emoji: "♿",
     description: "Pomaže kad postoje stepenice – omogućuje pristupačan ulaz.",
   },
   {
@@ -72,7 +68,6 @@ const zones: Zone[] = [
 
 function Movement() {
   const navigate = useNavigate();
-  const [tab, setTab] = useState<Tab>("intro");
   // Game state
   const [placed, setPlaced] = useState<Record<ZoneId, ToolId | null>>({
     entranceStairs: null,
@@ -83,25 +78,31 @@ function Movement() {
   const [selectedTool, setSelectedTool] = useState<ToolId | null>(null);
   const [points, setPoints] = useState(0);
   const [feedback, setFeedback] = useState<string>(
-    "Odaberi alat i postavi ga na pravo mjesto (drag&drop ili klikom)."
+      "Odaberi značajku i povuci ju na odgovarajuće mjesto."
   );
 
-  const [reflection, setReflection] = useState(() => {
-    try {
-      const raw = localStorage.getItem(LS_REFLECTION);
-      return raw ? (JSON.parse(raw) as { q1: string; q2: string }) : { q1: "", q2: "" };
-    } catch {
-      return { q1: "", q2: "" };
-    }
-  });
+  // State za animacije
+  const [animateHeader, setAnimateHeader] = useState(false);
+  const [animateFacts, setAnimateFacts] = useState(false);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(LS_REFLECTION, JSON.stringify(reflection));
-    } catch {
-      // ignore
-    }
-  }, [reflection]);
+    // Interval za prve dvije ikone (lice i kolica) - svakih 3 sekunde
+    const headerInterval = setInterval(() => {
+      setAnimateHeader(true);
+      setTimeout(() => setAnimateHeader(false), 1000);
+    }, 3000);
+
+    // Interval za druge 4 ikone - svakih 3.5 sekunde
+    const factsInterval = setInterval(() => {
+      setAnimateFacts(true);
+      setTimeout(() => setAnimateFacts(false), 1000);
+    }, 3500);
+
+    return () => {
+      clearInterval(headerInterval);
+      clearInterval(factsInterval);
+    };
+  }, []);
 
   const completedCount = useMemo(() => {
     return zones.filter((z) => placed[z.id] === z.correctTool).length;
@@ -136,7 +137,7 @@ function Movement() {
       setPoints((p) => Math.max(0, p - 5));
       const hintTool = toolById(zone.correctTool);
       setFeedback(
-        `➖ To nije najbolje rješenje za "${zone.obstacle}". Pokušaj s: ${hintTool.name} ${hintTool.emoji}`
+          `➖ To nije najbolje rješenje za "${zone.obstacle}". Pokušaj s: ${hintTool.name} ${hintTool.emoji}`
       );
     }
   }
@@ -145,7 +146,7 @@ function Movement() {
     setPlaced({ entranceStairs: null, mainDoor: null, stairsHall: null });
     setSelectedTool(null);
     setPoints(0);
-    setFeedback("Odaberi alat i postavi ga na pravo mjesto (drag&drop ili klikom).");
+    setFeedback("Odaberi značajku i povuci ju na odgovarajuće mjesto.");
   }
 
   // Drag & Drop handlers
@@ -170,20 +171,17 @@ function Movement() {
   function onToolClick(toolId: ToolId) {
     setSelectedTool((prev) => (prev === toolId ? null : toolId));
     const t = toolById(toolId);
-    setFeedback(`Odabran alat: ${t.name} ${t.emoji}. Klikni mjesto na tlocrta da ga postaviš.`);
+    setFeedback(`Odabrana značajka: ${t.name} ${t.emoji}. Klikni mjesto na tlocrta da ga postaviš.`);
   }
 
   function onZoneClick(zoneId: ZoneId) {
     if (!selectedTool) {
-      setFeedback("Prvo odaberi alat iz kutije (desno).");
+      setFeedback("Prvo odaberi značajku iz kutije (desno).");
       return;
     }
     setToolOnZone(zoneId, selectedTool);
   }
 
-  // Intro content
-  const story =
-    "Ja sam Petra i koristim invalidska kolica. Kad dođem do škole, ponekad ne mogu ući jer su stepenice visoke ili su vrata preuska. Najviše mi pomaže kad je prostor prilagođen – tada mogu biti samostalna kao i ostali.";
 
   const facts = [
     { emoji: "♿️", title: "Pristupačnost je za sve", text: "Rampa i šira vrata pomažu i roditeljima s kolicima za bebe, ljudima s ozljedama i starijima." },
@@ -193,320 +191,212 @@ function Movement() {
   ];
 
   return (
-    <div className="movement-container">
-      <header className="movement-header">
-        <div className="header-content">
-          <div className="header-characters">
-            <div className="character character-left">🧑‍🦽</div>
-            <div className="character character-right">🧒</div>
+      <div className="movement-container-pokret">
+        <header className="movement-header-pokret">
+          <div className="movement-header-content-pokret">
+            <button className="movement-back-btn-pokret" onClick={() => navigate("/")}>
+              ⬅ Povratak
+            </button>
+            <div className={`movement-header-characters-pokret ${animateHeader ? 'movement-bounce' : ''}`}>
+              <div className="movement-character-left-pokret">🧑‍🦽</div>
+              <div className="movement-character-right-pokret">🧒</div>
+            </div>
+
+            <h1 className="movement-title-pokret">
+              ♿️ POKRET I TIJELO
+            </h1>
+            <p className="movement-subtitle-pokret">Učimo kako škola može biti pristupačna svima — kroz igru "Uređujemo školu".</p>
+
+            {/* Prve dvije ikone s animacijom */}
+
+            {/* Druge 4 ikone s animacijom */}
+            <div className={`movement-header-decoration-pokret ${animateFacts ? 'movement-bounce' : ''}`}>
+              <span className="movement-decoration-item-pokret">♿</span>
+              <span className="movement-decoration-item-pokret">🚪</span>
+              <span className="movement-decoration-item-pokret">🤚</span>
+              <span className="movement-decoration-item-pokret">🏫</span>
+            </div>
           </div>
-          <h1>
-            ♿️ POKRET I TIJELO
-          </h1>
-          <p className="subtitle">Učimo kako škola može biti pristupačna svima — kroz igru “Uređujemo školu”.</p>
-          <div className="header-decoration">
-            <span className="decoration-item">🛝</span>
-            <span className="decoration-item">🚪</span>
-            <span className="decoration-item">🤚</span>
-            <span className="decoration-item">🏫</span>
-          </div>
-        </div>
-      </header>
+        </header>
 
-      <nav className="movement-navigation" aria-label="Navigacija po modulu Pokret i tijelo">
-        <button
-          className={`movement-nav-btn ${tab === "intro" ? "active" : ""}`}
-          onClick={() => setTab("intro")}
-        >
-          Upoznaj
-        </button>
-        <button
-          className={`movement-nav-btn ${tab === "game" ? "active" : ""}`}
-          onClick={() => setTab("game")}
-        >
-          Igraj i otkrij
-        </button>
-        <button
-          className={`movement-nav-btn ${tab === "reflect" ? "active" : ""}`}
-          onClick={() => setTab("reflect")}
-        >
-          Razmisli
-        </button>
-        <button
-          className={`movement-nav-btn ${tab === "tips" ? "active" : ""}`}
-          onClick={() => setTab("tips")}
-        >
-          Savjeti
-        </button>
-        <button className="movement-nav-btn ghost" onClick={() => navigate("/")}>
-          ⬅ Povratak
-        </button>
-      </nav>
+        <main className="movement-content-pokret">
+          {/* UPOZNAJ SEKCIJA */}
+          <section className="movement-intro-section-pokret movement-full-width-section-pokret">
+            <div className="movement-section-container-pokret">
 
-      <main className="movement-content">
-        {tab === "intro" && (
-          <>
-            <section className="intro-section full-width-section">
-              <div className="section-container">
-                <div className="section-header">
-                  <div className="section-icon">📖</div>
-                  <h2>Kratka priča</h2>
-                </div>
-                <div className="story-card">
-                  <p className="story-text">{story}</p>
-                  <div className="story-actions">
-                    <button className="primary-btn" onClick={() => setTab("game")}>Kreni u igru</button>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="facts-section full-width-section">
-              <div className="section-container">
-                <div className="section-header">
-                  <div className="section-icon">✨</div>
-                  <h2>Jesi li znao da…</h2>
+              <div className="movement-facts-section-pokret">
+                <div className="movement-section-header-pokret">
+                  <div className="movement-section-icon-pokret">✨</div>
+                  <h2 className="movement-section-title-pokret">Upoznaj</h2>
                 </div>
 
-                <div className="facts-grid">
+                <div className="movement-facts-grid-pokret">
                   {facts.map((f) => (
-                    <div key={f.title} className="info-card red-card">
-                      <div className="card-icon">{f.emoji}</div>
-                      <h3>{f.title}</h3>
-                      <p>{f.text}</p>
-                    </div>
+                      <div key={f.title} className="movement-info-card-pokret">
+                        <div className="movement-card-icon-pokret">{f.emoji}</div>
+                        <h3 className="movement-card-title-pokret">{f.title}</h3>
+                        <p className="movement-card-text-pokret">{f.text}</p>
+                      </div>
                   ))}
                 </div>
               </div>
-            </section>
-          </>
-        )}
+            </div>
+          </section>
 
-        {tab === "game" && (
-          <section className="game-section full-width-section">
-            <div className="section-container">
-              <div className="section-header">
-                <div className="section-icon">🧩</div>
-                <h2>Igra: Uređujemo školu</h2>
+          {/* IGRAJ SEKCIJA */}
+          <section className="movement-game-section-pokret movement-full-width-section-pokret">
+            <div className="movement-section-container-pokret">
+              <div className="movement-section-header-pokret">
+                <div className="movement-section-icon-pokret">🧩</div>
+                <h2 className="movement-section-title-pokret">Igraj i otkrij</h2>
               </div>
 
-              <p className="section-description">
-                Cilj: prepoznaj prepreke i postavi prava rješenja. Možeš koristiti <b>drag&drop</b> ili <b>klikni alat → klikni mjesto</b>.
-              </p>
+              <div className="movement-game-container-pokret">
+                <div className="movement-game-header-pokret">
+                  <div className="movement-score-pill-pokret">Bodovi: <b>{points}</b></div>
+                  <div className="movement-score-pill-pokret">Riješeno: <b>{completedCount}/{zones.length}</b></div>
+                  <button className="movement-secondary-btn-pokret movement-reset-btn-pokret" onClick={resetGame}>Resetiraj igru</button>
+                </div>
 
-              <div className="game-layout">
-                <div className="map-card">
-                  <div className="map-top">
-                    <div className="score-pill">Bodovi: <b>{points}</b></div>
-                    <div className="score-pill">Riješeno: <b>{completedCount}/{zones.length}</b></div>
-                  </div>
+                <div className="movement-feedback-pokret" role="status" aria-live="polite">
+                  {feedback}
+                </div>
 
-                  <div className="feedback" role="status" aria-live="polite">
-                    {feedback}
-                  </div>
+                <div className="movement-game-content-pokret">
+                  <div className="movement-game-map-pokret">
+                    <div className="movement-school-map-pokret" aria-label="Tlocrt škole s preprekama">
+                      {zones.map((z) => {
+                        const placedTool = placed[z.id];
+                        const isCorrect = placedTool === z.correctTool;
 
-                  <div className="school-map" aria-label="Tlocrt škole s preprekama">
-                    {zones.map((z) => {
-                      const placedTool = placed[z.id];
-                      const isCorrect = placedTool === z.correctTool;
+                        return (
+                            <button
+                                key={z.id}
+                                type="button"
+                                className={`movement-map-zone-pokret ${isCorrect ? "movement-correct-pokret" : placedTool ? "movement-wrong-pokret" : ""}`}
+                                onDrop={(e) => onDrop(e, z.id)}
+                                onDragOver={onDragOver}
+                                onClick={() => onZoneClick(z.id)}
+                                aria-label={`${z.title}: ${z.obstacle}. ${placedTool ? `Postavljeno: ${toolById(placedTool).name}` : "Nije postavljeno."}`}
+                            >
+                              <div className="movement-zone-header-pokret">
+                                <span className="movement-zone-title-pokret">{z.title}</span>
+                                <span className="movement-zone-obstacle-pokret">{z.obstacleEmoji}</span>
+                              </div>
+                              <div className="movement-zone-body-pokret">
+                                <div className="movement-zone-obstacle-text-pokret">{z.obstacle}</div>
 
-                      return (
-                        <button
-                          key={z.id}
-                          type="button"
-                          className={`map-zone ${isCorrect ? "correct" : placedTool ? "wrong" : ""}`}
-                          onDrop={(e) => onDrop(e, z.id)}
-                          onDragOver={onDragOver}
-                          onClick={() => onZoneClick(z.id)}
-                          aria-label={`${z.title}: ${z.obstacle}. ${placedTool ? `Postavljeno: ${toolById(placedTool).name}` : "Nije postavljeno."}`}
-                        >
-                          <div className="zone-header">
-                            <span className="zone-title">{z.title}</span>
-                            <span className="zone-obstacle">{z.obstacleEmoji}</span>
-                          </div>
-                          <div className="zone-body">
-                            <div className="zone-obstacle-text">{z.obstacle}</div>
-
-                            <div className="zone-slot">
-                              {placedTool ? (
-                                <span className="placed-tool">
+                                <div className="movement-zone-slot-pokret">
+                                  {placedTool ? (
+                                      <span className="movement-placed-tool-pokret">
                                   {toolById(placedTool).emoji} {toolById(placedTool).name}
                                 </span>
-                              ) : (
-                                <span className="slot-hint">⬇ Ovdje postavi rješenje</span>
-                              )}
-                            </div>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <div className="game-actions">
-                    <button className="secondary-btn" onClick={resetGame}>Reset</button>
-                    <button className="primary-btn" onClick={() => setTab("reflect")} disabled={!isDone}>
-                      {isDone ? "Završi i razmisli" : "Završi (prvo riješi sve)"}
-                    </button>
-                  </div>
-
-                  {badgeText && (
-                    <div className="badge" aria-live="polite">
-                      {badgeText} • odličan posao! 🎉
+                                  ) : (
+                                      <span className="movement-slot-hint-pokret">⬇ Ovdje postavi rješenje</span>
+                                  )}
+                                </div>
+                              </div>
+                            </button>
+                        );
+                      })}
                     </div>
-                  )}
-                </div>
 
-                <aside className="toolbox-card" aria-label="Kutija s alatima">
-                  <h3>Alati</h3>
-                  <p className="small">
-                    Odaberi alat i povuci ga na tlocrt ili klikni alat pa mjesto na tlocrtu.
-                  </p>
-
-                  <div className="tools-grid">
-                    {tools.map((t) => {
-                      const active = selectedTool === t.id;
-                      return (
-                        <div
-                          key={t.id}
-                          className={`tool ${active ? "active" : ""}`}
-                          draggable
-                          onDragStart={(e) => onDragStart(e, t.id)}
-                          onClick={() => onToolClick(t.id)}
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              e.preventDefault();
-                              onToolClick(t.id);
-                            }
-                          }}
-                          aria-label={`${t.name}. ${t.description}`}
-                        >
-                          <div className="tool-emoji">{t.emoji}</div>
-                          <div className="tool-text">
-                            <div className="tool-name">{t.name}</div>
-                            <div className="tool-desc">{t.description}</div>
-                          </div>
+                    {badgeText && (
+                        <div className="movement-badge-pokret" aria-live="polite">
+                          {badgeText} • odličan posao! 🎉
                         </div>
-                      );
-                    })}
+                    )}
                   </div>
 
-                  <div className="tip-card">
-                    <div className="tip-title">💡 Mikro-cilj</div>
-                    <div className="tip-text">
-                      Danas otkrivaš kako male promjene u prostoru mogu omogućiti veliku samostalnost.
+                  <div className="movement-game-tools-pokret">
+                    <h3 className="movement-tools-title-pokret">Značajke</h3>
+
+                    <div className="movement-tools-grid-pokret">
+                      {tools.map((t) => {
+                        const active = selectedTool === t.id;
+                        return (
+                            <div
+                                key={t.id}
+                                className={`movement-tool-pokret ${active ? "movement-tool-active-pokret" : ""}`}
+                                draggable
+                                onDragStart={(e) => onDragStart(e, t.id)}
+                                onClick={() => onToolClick(t.id)}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    onToolClick(t.id);
+                                  }
+                                }}
+                                aria-label={`${t.name}. ${t.description}`}
+                            >
+                              <div className="movement-tool-emoji-pokret">{t.emoji}</div>
+                              <div className="movement-tool-text-pokret">
+                                <div className="movement-tool-name-pokret">{t.name}</div>
+                                <div className="movement-tool-desc-pokret">{t.description}</div>
+                              </div>
+                            </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="movement-tip-card-pokret">
+                      <div className="movement-tip-title-pokret">💡 Mikro-cilj</div>
+                      <div className="movement-tip-text-pokret">
+                        Danas otkrivaš kako male promjene u prostoru mogu omogućiti veliku samostalnost.
+                      </div>
                     </div>
                   </div>
-                </aside>
-              </div>
-            </div>
-          </section>
-        )}
-
-        {tab === "reflect" && (
-          <section className="reflect-section full-width-section">
-            <div className="section-container">
-              <div className="section-header">
-                <div className="section-icon">🗣️</div>
-                <h2>Razmisli i razgovaraj</h2>
-              </div>
-
-              <p className="section-description">
-                Ovdje nema “točno/krivo”. Poanta je razumjeti i predložiti dobra rješenja.
-              </p>
-
-              <div className="reflection-card">
-                <label className="field">
-                  <span>1) Što bi tebi pomoglo kad bi u školi postojale prepreke (stepenice, uska vrata)?</span>
-                  <textarea
-                    value={reflection.q1}
-                    onChange={(e) => setReflection((r) => ({ ...r, q1: e.target.value }))}
-                    rows={4}
-                    placeholder="npr. rampa, lift, šira vrata, pomoć pri nošenju stvari..."
-                  />
-                </label>
-
-                <label className="field">
-                  <span>2) Koju bi jednu promjenu u svojoj školi predložio da bude pristupačnija svima?</span>
-                  <textarea
-                    value={reflection.q2}
-                    onChange={(e) => setReflection((r) => ({ ...r, q2: e.target.value }))}
-                    rows={4}
-                    placeholder="npr. rukohvati, jasne staze, klupe s više mjesta..."
-                  />
-                </label>
-
-                <div className="reflection-actions">
-                  <button
-                    className="secondary-btn"
-                    onClick={() => setReflection({ q1: "", q2: "" })}
-                  >
-                    Očisti
-                  </button>
-                  <button className="primary-btn" onClick={() => setTab("tips")}>
-                    Pogledaj savjete
-                  </button>
-                </div>
-
-                <div className="small">
-                  (Odgovori se spremaju samo na ovom uređaju.)
                 </div>
               </div>
             </div>
           </section>
-        )}
 
-        {tab === "tips" && (
-          <section className="tips-section full-width-section">
-            <div className="section-container">
-              <div className="section-header">
-                <div className="section-icon">🤝</div>
-                <h2>Savjeti za razred</h2>
+          {/* SAVJETI SEKCIJA */}
+          <section className="movement-tips-section-pokret movement-full-width-section-pokret">
+            <div className="movement-section-container-pokret">
+              <div className="movement-section-header-pokret">
+                <div className="movement-section-icon-pokret">🤝</div>
+                <h2 className="movement-section-title-pokret">Savjeti za razred</h2>
               </div>
 
-              <div className="tips-grid">
-                <div className="tip-card big">
-                  <div className="tip-title">✅ Pitaj i slušaj</div>
-                  <div className="tip-text">
-                    Umjesto pretpostavke, pitaj: “Što ti olakšava kretanje?” ili “Kako ti mogu pomoći?”
+              <div className="movement-tips-grid-pokret">
+                <div className="movement-tip-card-pokret movement-tip-card-big-pokret">
+                  <div className="movement-tip-title-pokret">✅ Pitaj i slušaj</div>
+                  <div className="movement-tip-text-pokret">
+                    Umjesto pretpostavke, pitaj: "Što ti olakšava kretanje?" ili "Kako ti mogu pomoći?"
                   </div>
                 </div>
-                <div className="tip-card big">
-                  <div className="tip-title">✅ Ne diraj pomagala bez pitanja</div>
-                  <div className="tip-text">
+                <div className="movement-tip-card-pokret movement-tip-card-big-pokret">
+                  <div className="movement-tip-title-pokret">✅ Ne diraj pomagala bez pitanja</div>
+                  <div className="movement-tip-text-pokret">
                     Invalidska kolica, štap ili hodalica su dio osobnog prostora – uvijek prvo pitaj.
                   </div>
                 </div>
-                <div className="tip-card big">
-                  <div className="tip-title">✅ Prostor bez prepreka</div>
-                  <div className="tip-text">
+                <div className="movement-tip-card-pokret movement-tip-card-big-pokret">
+                  <div className="movement-tip-title-pokret">✅ Prostor bez prepreka</div>
+                  <div className="movement-tip-text-pokret">
                     Držite prolaze prohodnima, ruksake maknite sa stepenica i hodnika.
                   </div>
                 </div>
-                <div className="tip-card big">
-                  <div className="tip-title">✅ Pristupačnost pomaže svima</div>
-                  <div className="tip-text">
+                <div className="movement-tip-card-pokret movement-tip-card-big-pokret">
+                  <div className="movement-tip-title-pokret">✅ Pristupačnost pomaže svima</div>
+                  <div className="movement-tip-text-pokret">
                     Kad je škola pristupačna, lakše je kretanje svima — i kad je netko ozlijeđen ili nosi teške stvari.
                   </div>
                 </div>
               </div>
-
-              <div className="cta-row">
-                <button className="primary-btn" onClick={() => setTab("game")}>Ponovi igru</button>
-                <button className="secondary-btn" onClick={() => navigate("/")}>Na početnu</button>
-              </div>
             </div>
           </section>
-        )}
-      </main>
+        </main>
 
-      <footer className="movement-footer full-width-section">
-        <div className="section-container">
-          <p>💬 Poruka: razumijevanje znači prilagoditi prostor i ponašanje — bez sažaljenja, uz poštovanje.</p>
-        </div>
-      </footer>
-    </div>
+        <footer className="movement-footer-pokret movement-full-width-section-pokret">
+          <div className="movement-section-container-pokret">
+            <p className="movement-footer-text-pokret">💬 Poruka: razumijevanje znači prilagoditi prostor i ponašanje — bez sažaljenja, uz poštovanje.</p>
+          </div>
+        </footer>
+      </div>
   );
 }
 
